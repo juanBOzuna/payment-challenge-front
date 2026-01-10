@@ -1,0 +1,99 @@
+.mobile-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #FAFAFA;
+    color: #1A1A1A;
+}
+
+.mobile-header {
+    background-color: white;
+    border-bottom: 1px solid #E8E8E8;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+}
+
+@media (min-width: 768px) {
+    .header-content {
+        padding: 1.125rem 2rem;
+    }
+}
+
+.brand {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.brand-wompi {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #6B21A8;
+    letter-spacing: -0.3px;
+}
+
+.brand-shop {
+    font-weight: 400;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.info-banner {
+    background-color: #FFF9E6;
+    border-bottom: 1px solid #F5E5B3;
+}
+
+.info-text {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+    color: #7A6A2E;
+    text-align: center;
+    font-weight: 500;
+}
+
+@media (min-width: 768px) {
+    .info-text {
+        padding: 0.6875rem 2rem;
+        font-size: 0.875rem;
+    }
+}
+
+.mobile-content {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1rem 0;
+}
+
+@media (min-width: 768px) {
+    .mobile-content {
+        padding: 2rem 2rem 3rem;
+    }
+
+    .brand-wompi {
+        font-size: 1.375rem;
+    }
+
+    .brand-shop {
+        font-size: 1.375rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .mobile-content {
+        padding: 2.5rem 3rem 4rem;
+    }
+}
