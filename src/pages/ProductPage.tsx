@@ -17,6 +17,7 @@ export const ProductPage: React.FC = () => {
 
     const handleBuy = () => {
         console.log('Initiating Purchase Sequence...');
+        // Navigation to Transaction will go here
     };
 
     if (status === 'loading') {
@@ -41,6 +42,7 @@ export const ProductPage: React.FC = () => {
         );
     }
 
+    // Focus on Single Product (The first one, as per requirements implied)
     const featuredProduct = items[0];
 
     if (!featuredProduct) return null;
