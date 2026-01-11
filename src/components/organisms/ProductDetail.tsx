@@ -23,14 +23,14 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy }) 
 
             <div className="info-section">
                 <div className="breadcrumb">
-                    Home › Clothing › {product.name}
+                    Home › {product.category?.name || 'Products'} › {product.name}
                 </div>
 
                 <h1 className="product-name">{product.name}</h1>
 
                 <div className="rating-section">
-                    <div className="stars">★★★★★</div>
-                    <span className="review-count">4.8 (324 reviews)</span>
+                    <div className="stars">{'★'.repeat(Math.round(product.averageRating))}{'☆'.repeat(5 - Math.round(product.averageRating))}</div>
+                    <span className="review-count">{product.averageRating.toFixed(1)} ({product.reviewCount} reviews)</span>
                 </div>
 
                 <div className="price-section">
@@ -86,32 +86,43 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy }) 
                 <div className="specs-section">
                     <h3 className="specs-title">Características del producto</h3>
                     <div className="specs-list">
-                        <div className="spec-item">
-                            <span className="spec-label">Material</span>
-                            <span className="spec-value">100% Algodón Premium</span>
-                        </div>
-                        <div className="spec-item">
-                            <span className="spec-label">Tallas disponibles</span>
-                            <span className="spec-value">S, M, L, XL</span>
-                        </div>
-                        <div className="spec-item">
-                            <span className="spec-label">Color</span>
-                            <span className="spec-value">Blanco</span>
-                        </div>
-                        <div className="spec-item">
-                            <span className="spec-label">Cuidado</span>
-                            <span className="spec-value">Lavar a máquina, secar a baja temperatura</span>
-                        </div>
+                        {product.specifications?.material && (
+                            <div className="spec-item">
+                                <span className="spec-label">Material</span>
+                                <span className="spec-value">{product.specifications.material}</span>
+                            </div>
+                        )}
+                        {product.specifications?.sizes && (
+                            <div className="spec-item">
+                                <span className="spec-label">Tallas disponibles</span>
+                                <span className="spec-value">{product.specifications.sizes.join(', ')}</span>
+                            </div>
+                        )}
+                        {product.specifications?.color && (
+                            <div className="spec-item">
+                                <span className="spec-label">Color</span>
+                                <span className="spec-value">{product.specifications.color}</span>
+                            </div>
+                        )}
+                        {product.specifications?.care && (
+                            <div className="spec-item">
+                                <span className="spec-label">Cuidado</span>
+                                <span className="spec-value">{product.specifications.care}</span>
+                            </div>
+                        )}
                     </div>
                 </div>
 
                 <div className="description-section">
                     <h3 className="description-title">Descripción</h3>
                     <p className="description-text">
-                        {product.name} de alta calidad, diseñada para ofrecer comodidad y estilo.
-                        Fabricada con materiales premium y cuidado en cada detalle.
-                        Perfecta para uso diario o eventos especiales.
+                        {product.description || `${product.name} de alta calidad.`}
                     </p>
+                    {product.brand && (
+                        <p className="brand-info">
+                            <strong>Marca:</strong> {product.brand}
+                        </p>
+                    )}
                 </div>
             </div>
         </div>
