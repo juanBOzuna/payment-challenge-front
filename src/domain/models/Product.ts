@@ -13,7 +13,7 @@ export interface Product {
     name: string;
     description: string;
     price: number;
-    stock: number;
+    availableStock: number;
     sku: string;
     brand: string;
     specifications: ProductSpecifications;

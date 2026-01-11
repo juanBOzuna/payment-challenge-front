@@ -44,15 +44,15 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy }) 
                 </div>
 
                 <div className="stock-info">
-                    {product.stock > 5 ? (
+                    {product.availableStock > 5 ? (
                         <div className="in-stock">
                             <span className="stock-icon">✓</span>
-                            <span>Disponible • {product.stock} unidades</span>
+                            <span>Disponible • {product.availableStock} unidades</span>
                         </div>
                     ) : (
                         <div className="low-stock">
                             <span className="stock-icon">⚠</span>
-                            <span>¡Últimas {product.stock} unidades!</span>
+                            <span>¡Últimas {product.availableStock} unidades!</span>
                         </div>
                     )}
                 </div>
@@ -86,30 +86,14 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy }) 
                 <div className="specs-section">
                     <h3 className="specs-title">Características del producto</h3>
                     <div className="specs-list">
-                        {product.specifications?.material && (
-                            <div className="spec-item">
-                                <span className="spec-label">Material</span>
-                                <span className="spec-value">{product.specifications.material}</span>
+                        {product.specifications && Object.entries(product.specifications).map(([key, value]) => (
+                            <div key={key} className="spec-item">
+                                <span className="spec-label">{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                                <span className="spec-value">
+                                    {Array.isArray(value) ? value.join(', ') : String(value)}
+                                </span>
                             </div>
-                        )}
-                        {product.specifications?.sizes && (
-                            <div className="spec-item">
-                                <span className="spec-label">Tallas disponibles</span>
-                                <span className="spec-value">{product.specifications.sizes.join(', ')}</span>
-                            </div>
-                        )}
-                        {product.specifications?.color && (
-                            <div className="spec-item">
-                                <span className="spec-label">Color</span>
-                                <span className="spec-value">{product.specifications.color}</span>
-                            </div>
-                        )}
-                        {product.specifications?.care && (
-                            <div className="spec-item">
-                                <span className="spec-label">Cuidado</span>
-                                <span className="spec-value">{product.specifications.care}</span>
-                            </div>
-                        )}
+                        ))}
                     </div>
                 </div>
 
