@@ -30,13 +30,13 @@ export const ProductDetailPage: React.FC = () => {
     const product = items.find(p => p.id === id);
 
     // Sync checkout state with modal
-    // If checkout step progresses and modal is closed, open it? 
-    // Actually the previous logic was: if step >= 2, open modal.
+    // RESTORATION LOGIC: If we have an active checkout for THIS product (step > 1), ensure modal is open.
     useEffect(() => {
-        if (checkout.currentStep >= 3 && checkout.productId === product?.id && !isModalOpen) {
+        // Condition: Active Step (>1) AND Matching Product AND Modal Closed
+        if ((checkout.currentStep > 1 || checkout.isProcessing) && checkout.productId === product?.id && !isModalOpen) {
             setIsModalOpen(true);
         }
-    }, [checkout.currentStep]);
+    }, [checkout.currentStep, checkout.productId, product?.id, checkout.isProcessing]);
 
     const handleBuy = () => {
         if (!product) return;

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import { openCart } from '../../store/slices/ui.slice';
 import './Header.css';
 
 export const Header: React.FC = () => {
+    const dispatch = useAppDispatch();
     const { productId } = useAppSelector((state) => state.checkout);
     // If we have a productId selected for checkout, we count it as 1 item.
     // In a full cart system, this would be items.length.
@@ -15,7 +17,7 @@ export const Header: React.FC = () => {
                 <div className="header-logo">
                     <Link to="/" className="header-logo-link">LinkBox</Link>
                 </div>
-                <div className="header-cart" aria-label="Shopping Cart">
+                <div className="header-cart" aria-label="Shopping Cart" onClick={() => dispatch(openCart())} style={{ cursor: 'pointer' }}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

@@ -21,7 +21,8 @@ export const ProcessingStep = () => {
     return (
         <div className={`processing-step ${getPhaseClass()}`}>
             <div className="processing-step__content">
-                {phase !== null && phase < 3 ? (
+                {/* Show spinner if phase is active OR if we are just initialized (phase null but component mounted) */}
+                {(phase === null || phase < 3) ? (
                     <div className="processing-step__spinner">
                         <div className="spinner"></div>
                     </div>

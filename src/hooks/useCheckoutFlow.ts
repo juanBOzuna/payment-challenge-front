@@ -123,6 +123,8 @@ export const useCheckoutFlow = () => {
     const processPayment = async (): Promise<void> => {
         try {
             dispatch(setProcessing(true));
+            // Persistence Fix: Save PENDING status immediately so reload recovers correctly
+            dispatch(setPaymentResult({ status: 'PENDING', message: null, reference: null }));
             dispatch(setError(null));
 
             const customerResult = await paymentService.createCustomer({
@@ -161,6 +163,11 @@ export const useCheckoutFlow = () => {
 
             const transaction = transactionResult.getValue();
             dispatch(setTransactionId(transaction.transactionId));
+
+            // CRITICAL FIX: Go to Processing Step IMMEDIATELY after transaction creation.
+            // This ensures that if the user reloads while we get the token or process payment,
+            // they land on the Polling screen which can recover the status.
+            dispatch(goToStep(3.5));
 
             const acceptanceResult = await paymentService.getAcceptanceToken();
 
@@ -212,7 +219,7 @@ export const useCheckoutFlow = () => {
                     message: null,
                     reference: result.wompiReference || null,
                 }));
-                dispatch(goToStep(3.5));
+                // Already on 3.5, just stay there and let polling handle completion if needed
                 return;
             }
 
