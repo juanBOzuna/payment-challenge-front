@@ -33,7 +33,7 @@ export const ProductDetailPage: React.FC = () => {
     // If checkout step progresses and modal is closed, open it? 
     // Actually the previous logic was: if step >= 2, open modal.
     useEffect(() => {
-        if (checkout.currentStep >= 2 && !isModalOpen) {
+        if (checkout.currentStep >= 3 && checkout.productId === product?.id && !isModalOpen) {
             setIsModalOpen(true);
         }
     }, [checkout.currentStep]);
@@ -41,9 +41,13 @@ export const ProductDetailPage: React.FC = () => {
     const handleBuy = () => {
         if (!product) return;
 
-        if (checkout.currentStep >= 2) {
+        // Only resume if it's the same product and we are not in a terminal state (Step 4/5)
+        // Actually, for simplicity and to address the user's issue of "skipping step 2",
+        // it's safer to check if productId matches. 
+        if (checkout.currentStep >= 2 && checkout.productId === product.id && checkout.currentStep < 4) {
             setIsModalOpen(true);
         } else {
+            // Start fresh
             startCheckout(product.id, product.price, product.name, product.imageUrl);
             setIsModalOpen(true);
         }

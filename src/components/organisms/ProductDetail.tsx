@@ -50,27 +50,27 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy }) 
                     <div className="stock-info">
                         {product.availableStock > 5 ? (
                             <div className="in-stock">
-                                <span className="stock-icon">✓</span>
-                                <span>Disponible • {product.availableStock} unidades</span>
+                                <span>Disponible   {product.availableStock} unidades</span>
+                            </div>
+                        ) : product.availableStock > 0 ? (
+                            <div className="low-stock">
+                                <span>¡Últimas {product.availableStock} unidades!</span>
                             </div>
                         ) : (
-                            <div className="low-stock">
-                                <span className="stock-icon">⚠</span>
-                                <span>¡Últimas {product.availableStock} unidades!</span>
+                            <div className="out-of-stock">
+                                <span>Este producto no esta disponible.</span>
                             </div>
                         )}
                     </div>
 
                     <div className="shipping-info">
                         <div className="shipping-item">
-                            <span className="shipping-icon">🚚</span>
                             <div className="shipping-text">
                                 <div className="shipping-label">Envío GRATIS</div>
                                 <div className="shipping-detail">Llega mañana</div>
                             </div>
                         </div>
                         <div className="shipping-item">
-                            <span className="shipping-icon">↩️</span>
                             <div className="shipping-text">
                                 <div className="shipping-label">Devolución gratis</div>
                                 <div className="shipping-detail">Tienes 30 días desde que lo recibes</div>
@@ -79,10 +79,19 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy }) 
                     </div>
 
                     <div className="cta-section">
-                        <Button onClick={onBuy} variant="primary" fullWidth>
+                        <Button
+                            onClick={onBuy}
+                            variant="primary"
+                            fullWidth
+                            disabled={product.availableStock === 0}
+                        >
                             Comprar ahora
                         </Button>
-                        <Button variant="outline" fullWidth>
+                        <Button
+                            variant="outline"
+                            fullWidth
+                            disabled={product.availableStock === 0}
+                        >
                             Agregar al carrito
                         </Button>
                     </div>

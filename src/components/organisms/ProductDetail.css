@@ -177,6 +177,16 @@
     color: #F59E0B;
 }
 
+.out-of-stock {
+    color: #FF3B30;
+    /* Red color for Out of Stock */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
 .stock-icon {
     font-size: 1rem;
 }
