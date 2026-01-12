@@ -1,17 +1,22 @@
-/* UI Fix - Premium Minimalist Card Design */
+/* Boutique Minimalist Gallery Design - Premium Floating Products */
+
 .product-card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    /* Subtle gray border */
-    border-radius: 12px;
-    overflow: hidden;
-    /* Contain image */
-    transition: box-shadow 0.3s ease;
+    background: transparent;
+    /* No box, products float */
+    border: none;
+    /* Eliminate generic borders */
+    border-radius: 0;
+    /* Clean edges */
+    overflow: visible;
+    /* Allow hover effects to expand */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0;
+    /* No internal padding */
 
     /* Strict Flex Alignment */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     height: 100%;
 
     cursor: pointer;
@@ -19,78 +24,83 @@
 }
 
 .product-card:hover {
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-    /* Elegant shadow */
-    transform: translateY(-2px);
+    transform: translateY(-8px);
+    /* Subtle lift */
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+    /* Diffuse luxury shadow */
 }
 
-/* Image Area - Subtle Frame Technique */
+/* Image Area - Invisible Container for Order */
 .product-image-container {
     width: 100%;
     aspect-ratio: 1 / 1;
-    /* Force Square */
-    background-color: #F9FAFB;
-    /* Pale gray frame - creates visual uniformity */
-    border-radius: 8px;
-    /* Soft internal frame */
-    margin-bottom: 12px;
-    /* Separation from text */
+    /* Maintain square alignment */
+    background-color: transparent;
+    /* No gray frame - products float */
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    margin-bottom: 20px;
+    /* Generous breathing space */
 }
 
 .product-image {
-    max-width: 85%;
-    max-height: 85%;
+    max-width: 90%;
+    /* Slightly larger presence */
+    max-height: 90%;
     object-fit: contain;
-    /* No cropping, no blend mode */
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .product-card:hover .product-image {
-    transform: scale(1.05);
+    transform: scale(1.02);
+    /* Gentle zoom on hover */
 }
 
-/* Content Area - Flex Grow to push footer down */
+/* Content Area - Typography-Driven */
 .product-info {
-    padding: 16px;
+    padding: 0;
+    /* No padding, pure content */
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    /* Occupy remaining height */
 }
 
-/* Graphic Hierarchy */
+/* Graphic Hierarchy - Price First */
 .product-meta {
     margin-bottom: 0;
     order: 2;
-    /* Price matches "Precio... (Negro intenso)" description */
 }
 
-/* Title */
+/* Title - Light and Elegant */
 .product-title {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #6b7280;
     /* Medium Gray */
-    font-weight: 500;
-    margin: 0 0 4px 0;
+    font-weight: 400;
+    /* Light weight for elegance */
+    margin: 0 0 8px 0;
     line-height: 1.4;
     order: 1;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-/* Price */
+/* Price - The Hero (Bold and Dominant) */
 .product-price {
-    font-size: 1.1rem;
-    color: #111827;
-    /* Intense Black */
-    font-weight: 700;
+    font-size: 1.5rem;
+    /* Much larger */
+    color: #6A27A4;
+    /* Brand purple for premium feel */
+    font-weight: 800;
+    /* Extra Bold */
     display: block;
+    letter-spacing: -0.5px;
+    /* Tight, modern spacing */
 }
 
 /* Action Bar (Footer) */
@@ -98,27 +108,28 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: auto;
-    /* Pushes this to the very bottom */
-    padding-top: 12px;
+    margin-top: 16px;
+    /* Generous spacing */
+    padding-top: 0;
     order: 3;
 }
 
-/* Link Style "Ver Detalles" (Clean Text) */
+/* Link Style "Ver Detalles" */
 .action-link {
     color: #6A27A4;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     display: inline-block;
+    transition: opacity 0.2s;
 }
 
 .action-link:hover {
-    text-decoration: underline;
+    opacity: 0.7;
 }
 
-/* Cart Button (Clean Div Circle) */
+/* Cart Button - Minimal Circle */
 .cart-btn {
     width: 40px;
     height: 40px;
@@ -129,10 +140,11 @@
     justify-content: center;
     cursor: pointer;
     color: #333;
-    transition: all 0.2s;
+    transition: all 0.3s;
 }
 
 .cart-btn:hover {
     background-color: #6A27A4;
     color: white;
+    transform: scale(1.1);
 }
