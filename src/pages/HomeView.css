@@ -28,7 +28,7 @@
     position: relative;
     z-index: 10;
     color: white;
-    padding: 2rem;
+    padding: 3rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -95,7 +95,7 @@
         width: 50%;
         text-align: right;
         align-items: flex-end;
-        padding-right: 10%;
+        padding-right: 15%;
         margin-left: auto;
         margin-right: 0;
     }

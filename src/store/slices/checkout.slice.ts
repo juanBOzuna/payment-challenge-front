@@ -4,14 +4,22 @@ export type CheckoutStep = 1 | 2 | 3 | 3.5 | 4 | 5;
 export type PaymentStatus = 'PENDING' | 'APPROVED' | 'DECLINED' | 'ERROR' | null;
 export type CardType = 'VISA' | 'MASTERCARD' | null;
 
+export interface CheckoutItem {
+    productId: string;
+    quantity: number;
+    price: number;
+    name: string;
+    image: string;
+}
+
 export interface CheckoutState {
     currentStep: CheckoutStep;
 
     transactionId: string | null;
-    productId: string | null;
-    productName: string | null;
-    productImage: string | null;
-    productAmount: number;
+    items: CheckoutItem[];
+
+    // Derived/Summary info
+    summaryString: string;
     baseFee: number;
     deliveryFee: number;
     totalAmount: number;
@@ -45,12 +53,10 @@ const EXPIRATION_TIME = 24 * 60 * 60 * 1000;
 const initialState: CheckoutState = {
     currentStep: 1,
     transactionId: null,
-    productId: null,
-    productName: null,
-    productImage: null,
-    productAmount: 0,
-    baseFee: 5000,
-    deliveryFee: 10000,
+    items: [],
+    summaryString: '',
+    baseFee: 0,
+    deliveryFee: 0,
     totalAmount: 0,
     cardToken: null,
     cardType: null,
@@ -102,12 +108,18 @@ const checkoutSlice = createSlice({
             });
         },
 
-        setProductData: (state, action: PayloadAction<{ productId: string; productAmount: number; productName: string; productImage: string }>) => {
-            state.productId = action.payload.productId;
-            state.productAmount = action.payload.productAmount;
-            state.productName = action.payload.productName;
-            state.productImage = action.payload.productImage;
-            state.totalAmount = action.payload.productAmount + state.baseFee + state.deliveryFee;
+        setCheckoutItems: (state, action: PayloadAction<CheckoutItem[]>) => {
+            state.items = action.payload;
+            let itemsTotal = 0;
+            if (state.items && state.items.length > 0) {
+                itemsTotal = state.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                state.summaryString = state.items.length === 1
+                    ? state.items[0].name
+                    : `${state.items.length} productos`;
+            } else {
+                state.summaryString = '';
+            }
+            state.totalAmount = itemsTotal + state.baseFee + state.deliveryFee;
             state.lastUpdated = Date.now();
         },
 
@@ -175,7 +187,7 @@ export const {
     nextStep,
     previousStep,
     resetCheckout,
-    setProductData,
+    setCheckoutItems,
     setCardData,
     setCustomerData,
     setDeliveryData,

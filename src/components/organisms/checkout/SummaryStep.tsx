@@ -1,5 +1,4 @@
 import { useCheckoutFlow } from '../../../hooks/useCheckoutFlow';
-import { useAppSelector } from '../../../store/hooks';
 import { useState } from 'react';
 import { maskCardNumber } from '../../../utils/cardValidation';
 import './SummaryStep.css';
@@ -7,9 +6,6 @@ import './SummaryStep.css';
 export const SummaryStep = () => {
     const { processPayment, checkout } = useCheckoutFlow();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const product = useAppSelector(state =>
-        state.products.items.find(p => p.id === checkout.productId)
-    );
 
     const handlePayment = async () => {
         if (isSubmitting || checkout.isProcessing) return;
@@ -19,9 +15,7 @@ export const SummaryStep = () => {
         setIsSubmitting(false);
     };
 
-    if (!product) {
-        return <div>Producto no encontrado</div>;
-    }
+    const subtotal = checkout.items ? checkout.items.reduce((sum, item) => sum + (item.price * item.quantity), 0) : 0;
 
     const maskedCard = checkout.cardLastFour
         ? maskCardNumber(`************${checkout.cardLastFour}`)
@@ -36,33 +30,40 @@ export const SummaryStep = () => {
                         <circle cx="12" cy="12" r="10" />
                         <polyline points="12 6 12 12 16 14" />
                     </svg>
-                    Producto
+                    Productos ({checkout.items ? checkout.items.length : 0})
                 </h3>
-                <div className="summary-step__product">
-                    <img
-                        src={product.imageUrl}
-                        alt={product.name}
-                        className="summary-step__product-image"
-                    />
-                    <div className="summary-step__product-info">
-                        <h4>{product.name}</h4>
-                        <p className="summary-step__product-price">
-                            ${checkout.productAmount.toLocaleString('es-CO')}
-                        </p>
-                    </div>
+                <div className="summary-step__products-list">
+                    {checkout.items && checkout.items.map(item => (
+                        <div key={item.productId} className="summary-step__product-row" style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                            <img
+                                src={item.image}
+                                alt={item.name}
+                                className="summary-step__product-image"
+                                style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }}
+                            />
+                            <div className="summary-step__product-info">
+                                <h4 style={{ margin: 0 }}>{item.name}</h4>
+                                <p style={{ margin: '0.2rem 0', color: '#666' }}>
+                                    {item.quantity} x ${item.price.toLocaleString('es-CO')}
+                                </p>
+                                <p className="summary-step__product-price" style={{ fontWeight: 'bold' }}>
+                                    ${(item.quantity * item.price).toLocaleString('es-CO')}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </section>
 
             {/* Cost Breakdown */}
             <section className="summary-step__section">
                 <h3 className="summary-step__title">
-
                     Resumen de Costos
                 </h3>
                 <div className="summary-step__costs">
                     <div className="summary-step__cost-item">
-                        <span>Producto</span>
-                        <span>${checkout.productAmount.toLocaleString('es-CO')}</span>
+                        <span>Subtotal</span>
+                        <span>${subtotal.toLocaleString('es-CO')}</span>
                     </div>
                     <div className="summary-step__cost-item">
                         <span>Tarifa base</span>

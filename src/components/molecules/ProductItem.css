@@ -24,30 +24,28 @@
     transform: translateY(-2px);
 }
 
-/* Image Area - The Rigid Box */
+/* Image Area - Subtle Frame Technique */
 .product-image-container {
     width: 100%;
-    aspect-ratio: 1 / 1 !important;
+    aspect-ratio: 1 / 1;
     /* Force Square */
-    background-color: #f9fafb;
-    /* Very light gray */
+    background-color: #F9FAFB;
+    /* Pale gray frame - creates visual uniformity */
+    border-radius: 8px;
+    /* Soft internal frame */
+    margin-bottom: 12px;
+    /* Separation from text */
     display: flex;
     align-items: center;
-    /* Vertical Center */
     justify-content: center;
-    /* Horizontal Center */
     overflow: hidden;
-    border-bottom: 1px solid #f3f4f6;
 }
 
 .product-image {
-    width: 85%;
-    /* 15% Air as requested */
-    height: 85%;
+    max-width: 85%;
+    max-height: 85%;
     object-fit: contain;
-    /* No cropping */
-    mix-blend-mode: multiply;
-    /* Eliminate white bg visual */
+    /* No cropping, no blend mode */
     transition: transform 0.3s ease;
 }
 

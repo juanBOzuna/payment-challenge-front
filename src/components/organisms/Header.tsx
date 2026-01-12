@@ -6,10 +6,7 @@ import './Header.css';
 
 export const Header: React.FC = () => {
     const dispatch = useAppDispatch();
-    const { productId } = useAppSelector((state) => state.checkout);
-    // If we have a productId selected for checkout, we count it as 1 item.
-    // In a full cart system, this would be items.length.
-    const itemCount = productId ? 1 : 0;
+    const { itemCount } = useAppSelector((state) => state.cart);
 
     return (
         <header className="header-root">

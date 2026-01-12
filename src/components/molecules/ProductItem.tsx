@@ -1,6 +1,9 @@
 import React from 'react';
 import type { Product } from '../../domain/models/Product';
 import './ProductItem.css';
+import { useAppDispatch } from '../../store/hooks';
+import { addToCart } from '../../store/slices/cart.slice';
+import { openCart } from '../../store/slices/ui.slice';
 
 interface ProductItemProps {
     product: Product;
@@ -8,9 +11,22 @@ interface ProductItemProps {
 }
 
 export const ProductItem: React.FC<ProductItemProps> = ({ product, onSelect }) => {
+    const dispatch = useAppDispatch();
+
     // Handler for the entire card click
     const handleCardClick = () => {
         onSelect(product);
+    };
+
+    const handleAddToCart = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        dispatch(addToCart({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            imageUrl: product.imageUrl
+        }));
+        dispatch(openCart());
     };
 
     return (
@@ -27,10 +43,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product, onSelect }) =
                     <span className="action-link">
                         Ver Detalles
                     </span>
-                    <div className="cart-btn" aria-label="Agregar al carrito" onClick={(e) => {
-                        e.stopPropagation();
-                        onSelect(product);
-                    }}>
+                    <div className="cart-btn" aria-label="Agregar al carrito" onClick={handleAddToCart}>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="9" cy="21" r="1"></circle>
                             <circle cx="20" cy="21" r="1"></circle>

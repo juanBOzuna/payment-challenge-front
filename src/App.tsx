@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HomeView } from './pages/HomeView';
 import { ProductDetailPage } from './pages/ProductDetailPage';
@@ -9,9 +8,19 @@ import { closeCart } from './store/slices/ui.slice';
 import { CartDrawer } from './components/organisms/CartDrawer';
 import './App.css';
 
+import { CheckoutModal } from './components/organisms/CheckoutModal';
+import { closeCheckout } from './store/slices/ui.slice';
+
 function App() {
     const dispatch = useAppDispatch();
-    const { isCartOpen } = useAppSelector((state) => state.ui);
+    const { isCartOpen, isCheckoutOpen } = useAppSelector((state) => state.ui);
+    const checkout = useAppSelector((state) => state.checkout);
+
+    // Logic: Open if explicit, processing, pending, OR showing result (Step 4)
+    const finalIsOpen = isCheckoutOpen ||
+        checkout.isProcessing ||
+        checkout.paymentStatus === 'PENDING' ||
+        checkout.currentStep === 4;
 
     return (
         <BrowserRouter>
@@ -19,6 +28,12 @@ function App() {
             <div className="app-root">
                 <GlobalLoadingBackdrop />
                 <CartDrawer isOpen={isCartOpen} onClose={() => dispatch(closeCart())} />
+
+                <CheckoutModal
+                    isOpen={finalIsOpen}
+                    onClose={() => dispatch(closeCheckout())}
+                />
+
                 <Routes>
                     <Route path="/" element={<HomeView />} />
                     <Route path="/product/:id" element={<ProductDetailPage />} />

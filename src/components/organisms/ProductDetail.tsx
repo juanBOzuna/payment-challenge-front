@@ -5,14 +5,23 @@ import './ProductDetail.css';
 
 interface ProductDetailProps {
     product: Product;
-    onBuy: () => void;
+    onBuy: (quantity: number) => void;
+    onAddToCart: (quantity: number) => void;
 }
 
-export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy }) => {
+export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy, onAddToCart }) => {
     const [isZoomOpen, setIsZoomOpen] = React.useState(false);
+    const [quantity, setQuantity] = React.useState(1);
 
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('es-CO').format(price);
+    };
+
+    const handleQuantityChange = (delta: number) => {
+        const newQty = quantity + delta;
+        if (newQty >= 1 && newQty <= product.availableStock) {
+            setQuantity(newQty);
+        }
     };
 
     return (
@@ -63,6 +72,26 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy }) 
                         )}
                     </div>
 
+                    {product.availableStock > 0 && (
+                        <div className="quantity-selector-section">
+                            <span className="quantity-label">Cantidad:</span>
+                            <div className="quantity-control-detailed">
+                                <button
+                                    className="qty-btn-detail"
+                                    onClick={() => handleQuantityChange(-1)}
+                                    disabled={quantity <= 1}
+                                >-</button>
+                                <span className="qty-display-detail">{quantity}</span>
+                                <button
+                                    className="qty-btn-detail"
+                                    onClick={() => handleQuantityChange(1)}
+                                    disabled={quantity >= product.availableStock}
+                                >+</button>
+                            </div>
+                            <span className="stock-hint">({product.availableStock} disponibles)</span>
+                        </div>
+                    )}
+
                     <div className="shipping-info">
                         <div className="shipping-item">
                             <div className="shipping-text">
@@ -80,7 +109,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy }) 
 
                     <div className="cta-section">
                         <Button
-                            onClick={onBuy}
+                            onClick={() => onBuy(quantity)}
                             variant="primary"
                             fullWidth
                             disabled={product.availableStock === 0}
@@ -91,6 +120,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy }) 
                             variant="outline"
                             fullWidth
                             disabled={product.availableStock === 0}
+                            onClick={() => onAddToCart(quantity)}
                         >
                             Agregar al carrito
                         </Button>

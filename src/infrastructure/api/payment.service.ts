@@ -13,10 +13,14 @@ export interface CreateCustomerResponse {
     email: string;
 }
 
-export interface CreateTransactionDto {
+export interface CreateTransactionItemDto {
     productId: string;
+    quantity: number;
+}
+
+export interface CreateTransactionDto {
+    items: CreateTransactionItemDto[];
     customerId: string;
-    productAmount: number;
 }
 
 export interface CreateTransactionResponse {

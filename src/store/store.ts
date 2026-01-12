@@ -4,17 +4,19 @@ import storage from 'redux-persist/lib/storage';
 import productsReducer from './slices/products.slice';
 import checkoutReducer from './slices/checkout.slice';
 import uiReducer from './slices/ui.slice';
+import cartReducer from './slices/cart.slice';
 
 const rootReducer = combineReducers({
     products: productsReducer,
     checkout: checkoutReducer,
     ui: uiReducer,
+    cart: cartReducer,
 });
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['checkout'],
+    whitelist: ['checkout', 'cart'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

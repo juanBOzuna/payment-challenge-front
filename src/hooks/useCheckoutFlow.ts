@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import {
-    setProductData,
+    setCheckoutItems,
     setCardData,
     setCustomerData,
     setDeliveryData,
@@ -11,6 +11,7 @@ import {
     goToStep,
     resetCheckout,
 } from '../store/slices/checkout.slice';
+import type { CheckoutItem } from '../store/slices/checkout.slice';
 import { paymentService } from '../infrastructure/api/payment.service';
 import { wompiService } from '../infrastructure/api/wompi.service';
 import {
@@ -21,6 +22,7 @@ import {
     validateCardHolder,
     getLastFourDigits,
 } from '../utils/cardValidation';
+import { openCheckout } from '../store/slices/ui.slice';
 
 export interface CardDeliveryData {
     cardNumber: string;
@@ -49,12 +51,13 @@ export const useCheckoutFlow = () => {
     const checkout = useAppSelector(state => state.checkout);
 
     /**
-     * Step 1: Start checkout from product page
+     * Step 1: Start checkout from product page or cart
      */
-    const startCheckout = (productId: string, productAmount: number, productName: string, productImage: string) => {
+    const startCheckout = (items: CheckoutItem[]) => {
         dispatch(resetCheckout());
-        dispatch(setProductData({ productId, productAmount, productName, productImage }));
+        dispatch(setCheckoutItems(items));
         dispatch(goToStep(2));
+        dispatch(openCheckout());
     };
 
     /**
@@ -145,10 +148,16 @@ export const useCheckoutFlow = () => {
 
             const customer = customerResult.getValue();
 
+            // Create Transaction with Items
+            // Map checkout items to DTO
+            const transactionItems = checkout.items.map(item => ({
+                productId: item.productId,
+                quantity: item.quantity
+            }));
+
             const transactionResult = await paymentService.createTransaction({
-                productId: checkout.productId!,
+                items: transactionItems,
                 customerId: customer.customerId,
-                productAmount: checkout.productAmount,
             });
 
             if (transactionResult.isFailure) {
