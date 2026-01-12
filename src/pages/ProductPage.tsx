@@ -1,13 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchProducts } from '../store/slices/products.slice';
+import { useCheckoutFlow } from '../hooks/useCheckoutFlow';
 import { MobileLayout } from '../components/templates/MobileLayout';
 import { ProductDetail } from '../components/organisms/ProductDetail';
+import { CheckoutModal } from '../components/organisms/CheckoutModal';
 import './ProductPage.css';
 
 export const ProductPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const { items, status, error } = useAppSelector((state) => state.products);
+    const checkout = useAppSelector((state) => state.checkout);
+    const { startCheckout } = useCheckoutFlow();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         if (status === 'idle') {
@@ -15,9 +20,22 @@ export const ProductPage: React.FC = () => {
         }
     }, [dispatch, status]);
 
-    const handleBuy = () => {
-        console.log('Initiating Purchase Sequence...');
-        // Navigation to Transaction will go here
+    // Auto-open modal if checkout is in progress (after page reload)
+    useEffect(() => {
+        if (checkout.currentStep >= 2 && !isModalOpen) {
+            setIsModalOpen(true);
+        }
+    }, [checkout.currentStep]);
+
+    const handleBuy = (productId: string, productAmount: number, productName: string, imageUrl: string) => {
+        // If checkout is already in progress, just reopen the modal
+        if (checkout.currentStep >= 2) {
+            setIsModalOpen(true);
+        } else {
+            // Otherwise, start a new checkout
+            startCheckout(productId, productAmount, productName, imageUrl);
+            setIsModalOpen(true);
+        }
     };
 
     if (status === 'loading') {
@@ -49,7 +67,14 @@ export const ProductPage: React.FC = () => {
 
     return (
         <MobileLayout>
-            <ProductDetail product={featuredProduct} onBuy={handleBuy} />
+            <ProductDetail
+                product={featuredProduct}
+                onBuy={() => handleBuy(featuredProduct.id, featuredProduct.price, featuredProduct.name, featuredProduct.imageUrl)}
+            />
+            <CheckoutModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
         </MobileLayout>
     );
 };

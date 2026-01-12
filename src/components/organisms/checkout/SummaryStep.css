@@ -1,0 +1,228 @@
+.summary-step {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.summary-step__section {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.summary-step__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: left;
+}
+
+.summary-step__title svg {
+    color: #374151;
+    flex-shrink: 0;
+}
+
+.summary-step__product {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.summary-step__product-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: white;
+}
+
+.summary-step__product-info h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+    color: #1a1a1a;
+}
+
+.summary-step__product-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1F2937;
+    margin: 0;
+}
+
+.summary-step__costs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.summary-step__cost-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9375rem;
+    color: #6B7280;
+}
+
+.summary-step__cost-item span:first-child {
+    font-weight: 500;
+}
+
+.summary-step__cost-item span:last-child {
+    font-weight: 600;
+    color: #111827;
+    text-align: right;
+}
+
+.summary-step__cost-item--total {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #111827;
+    padding-top: 0.5rem;
+}
+
+.summary-step__cost-item--total span {
+    font-weight: 700;
+}
+
+.summary-step__divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 0.5rem 0;
+}
+
+.summary-step__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.summary-step__info-item {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    padding: 0.25rem 0;
+}
+
+.summary-step__info-label {
+    font-weight: 400;
+    color: #6B7280;
+    min-width: 85px;
+    flex-shrink: 0;
+}
+
+.summary-step__info-item span:last-child {
+    font-weight: 600;
+    color: #111827;
+}
+
+.summary-step__payment {
+    display: flex;
+    align-items: center;
+}
+
+.summary-step__card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: white;
+    padding: 0.875rem 1rem;
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
+    transition: all 0.2s ease;
+}
+
+.summary-step__card:hover {
+    border-color: #D1D5DB;
+}
+
+.summary-step__card-logo {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.summary-step__card-logo--visa {
+    background: #1A1F71;
+    color: white;
+}
+
+.summary-step__card-logo--mastercard {
+    background: #EB001B;
+    color: white;
+}
+
+.summary-step__card-number {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9375rem;
+    color: #374151;
+}
+
+.summary-step__pay-button {
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    color: white;
+    background: #6B21A8;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.summary-step__pay-button:hover:not(:disabled) {
+    background: #581C87;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px -4px rgba(107, 33, 168, 0.4);
+}
+
+.summary-step__pay-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.summary-step__spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.summary-step__disclaimer {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Mobile optimization */
+@media (max-width: 640px) {
+    .summary-step__product-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .summary-step__section {
+        padding: 1rem;
+    }
+}

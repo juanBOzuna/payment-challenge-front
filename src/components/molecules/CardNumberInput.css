@@ -1,0 +1,67 @@
+.card-number-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.card-number-input__label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary, #1a1a1a);
+}
+
+.card-number-input__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.card-number-input__field {
+    width: 100%;
+    padding: 0.75rem 3.5rem 0.75rem 1rem;
+    font-size: 1rem;
+    border: 2px solid var(--border-color, #e0e0e0);
+    border-radius: 8px;
+    background: white;
+    transition: all 0.2s ease;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.05em;
+}
+
+.card-number-input__field:focus {
+    outline: none;
+    border-color: var(--primary-color, #6366f1);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.card-number-input__field--error {
+    border-color: var(--error-color, #ef4444);
+}
+
+.card-number-input__field--error:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.card-number-input__logo {
+    position: absolute;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+}
+
+.card-number-input__error {
+    font-size: 0.75rem;
+    color: var(--error-color, #ef4444);
+    margin-top: -0.25rem;
+}
+
+/* Mobile optimization */
+@media (max-width: 640px) {
+    .card-number-input__field {
+        font-size: 16px;
+        /* Prevent zoom on iOS */
+        padding: 0.875rem 3.5rem 0.875rem 1rem;
+    }
+}
