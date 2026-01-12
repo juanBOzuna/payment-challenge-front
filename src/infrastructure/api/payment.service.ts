@@ -37,7 +37,7 @@ export interface ProcessPaymentDto {
 }
 
 export interface ProcessPaymentResponse {
-    status: 'APPROVED' | 'DECLINED' | 'ERROR';
+    status: 'APPROVED' | 'DECLINED' | 'ERROR' | 'PENDING';
     transactionId: string;
     message?: string;
     wompiReference?: string;

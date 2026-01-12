@@ -23,19 +23,16 @@ import {
 } from '../utils/cardValidation';
 
 export interface CardDeliveryData {
-    // Card data
     cardNumber: string;
     cvc: string;
     expiryMonth: string;
     expiryYear: string;
     cardHolder: string;
 
-    // Customer data
     name: string;
     email: string;
     phone: string;
 
-    // Delivery data
     address: string;
     city: string;
     postalCode: string;
@@ -69,14 +66,12 @@ export const useCheckoutFlow = () => {
             dispatch(setProcessing(true));
             dispatch(setError(null));
 
-            // Railway Track 1: Validate all inputs
             const validationResult = validateInputs(data);
             if (validationResult.isFailure) {
                 dispatch(setError(validationResult.error!));
                 return;
             }
 
-            // Railway Track 2: Tokenize card with Wompi
             const tokenResult = await wompiService.tokenizeCard({
                 number: data.cardNumber.replace(/\s/g, ''),
                 cvc: data.cvc,
@@ -90,7 +85,6 @@ export const useCheckoutFlow = () => {
                 return;
             }
 
-            // Railway Track 3: Save data (NO save full card number)
             const cardToken = tokenResult.getValue();
             const cardType = detectCardType(data.cardNumber);
             const lastFour = getLastFourDigits(data.cardNumber);
@@ -113,7 +107,6 @@ export const useCheckoutFlow = () => {
                 postalCode: data.postalCode,
             }));
 
-            // Railway Success: Go to summary
             dispatch(goToStep(3));
 
         } catch (error) {
@@ -131,9 +124,7 @@ export const useCheckoutFlow = () => {
         try {
             dispatch(setProcessing(true));
             dispatch(setError(null));
-            // Removed early navigation to prevent "flashing" screens
 
-            // Railway Track 1: Create customer
             const customerResult = await paymentService.createCustomer({
                 name: checkout.customerName,
                 email: checkout.customerEmail,
@@ -146,13 +137,12 @@ export const useCheckoutFlow = () => {
                     message: customerResult.error!,
                     reference: null,
                 }));
-                dispatch(goToStep(4)); // Go to status screen on error
+                dispatch(goToStep(4));
                 return;
             }
 
             const customer = customerResult.getValue();
 
-            // Railway Track 2: Create transaction
             const transactionResult = await paymentService.createTransaction({
                 productId: checkout.productId!,
                 customerId: customer.customerId,
@@ -165,14 +155,13 @@ export const useCheckoutFlow = () => {
                     message: transactionResult.error!,
                     reference: null,
                 }));
-                dispatch(goToStep(4)); // Go to status screen on error
+                dispatch(goToStep(4));
                 return;
             }
 
             const transaction = transactionResult.getValue();
             dispatch(setTransactionId(transaction.transactionId));
 
-            // Railway Track 3: Get Wompi acceptance token
             const acceptanceResult = await paymentService.getAcceptanceToken();
 
             if (acceptanceResult.isFailure) {
@@ -181,13 +170,12 @@ export const useCheckoutFlow = () => {
                     message: acceptanceResult.error!,
                     reference: null,
                 }));
-                dispatch(goToStep(4)); // Go to status screen on error
+                dispatch(goToStep(4));
                 return;
             }
 
             const { acceptanceToken } = acceptanceResult.getValue();
 
-            // Railway Track 4: Process payment with Wompi
             const paymentResult = await paymentService.processPayment(
                 transaction.transactionId,
                 {
@@ -212,7 +200,7 @@ export const useCheckoutFlow = () => {
                     message: paymentResult.error!,
                     reference: null,
                 }));
-                dispatch(goToStep(4)); // Go to status screen on declined/failure
+                dispatch(goToStep(4));
                 return;
             }
 
@@ -292,7 +280,6 @@ export const useCheckoutFlow = () => {
  * Returns Result<void> for ROP pattern
  */
 function validateInputs(data: CardDeliveryData): { isFailure: boolean; error?: string } {
-    // Card validation
     if (!validateCardNumber(data.cardNumber)) {
         return { isFailure: true, error: 'Número de tarjeta inválido' };
     }
@@ -309,7 +296,6 @@ function validateInputs(data: CardDeliveryData): { isFailure: boolean; error?: s
         return { isFailure: true, error: 'Nombre del titular inválido' };
     }
 
-    // Customer validation
     if (!data.name || data.name.trim().length < 3) {
         return { isFailure: true, error: 'Nombre debe tener al menos 3 caracteres' };
     }
@@ -322,7 +308,6 @@ function validateInputs(data: CardDeliveryData): { isFailure: boolean; error?: s
         return { isFailure: true, error: 'Teléfono inválido' };
     }
 
-    // Delivery validation
     if (!data.address || data.address.trim().length < 10) {
         return { isFailure: true, error: 'Dirección debe tener al menos 10 caracteres' };
     }

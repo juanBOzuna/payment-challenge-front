@@ -28,7 +28,6 @@ export const wompiService = {
      */
     async tokenizeCard(cardData: CardData): Promise<Result<CardTokenResponse>> {
         try {
-            // Validate card data before sending
             const validation = this.validateCardData(cardData);
             if (validation.isFailure) {
                 return Result.fail(validation.error!);
@@ -46,15 +45,12 @@ export const wompiService = {
             const result = await response.json();
 
             if (!response.ok) {
-                // Handle different Wompi error formats
                 let errorMessage = 'Card tokenization failed';
 
                 if (result.error) {
                     if (Array.isArray(result.error.messages)) {
                         errorMessage = result.error.messages.join(', ');
                     } else if (typeof result.error.messages === 'object' && result.error.messages !== null) {
-                        // Handle object format: { "field": ["Error message"] }
-                        // Map entries to "field: message" strings
                         errorMessage = Object.entries(result.error.messages)
                             .map(([field, msgs]) => {
                                 const friendlyName = FIELD_NAMES[field] || field;
@@ -75,7 +71,6 @@ export const wompiService = {
                 return Result.fail(errorMessage);
             }
 
-            // Wompi returns { data: { id, status, ... } }
             return Result.ok(result.data);
         } catch (error) {
             return Result.fail(error instanceof Error ? error.message : 'Network error');

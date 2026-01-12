@@ -197,9 +197,9 @@ describe('Result<T> - Railway Oriented Programming', () => {
     describe('Railway pattern - real-world scenario', () => {
         it('should chain multiple operations successfully', () => {
             const result = Result.ok(10)
-                .map(x => x * 2)           // 20
-                .bind(x => Result.ok(x + 5)) // 25
-                .map(x => x.toString());    // "25"
+                .map(x => x * 2)
+                .bind(x => Result.ok(x + 5))
+                .map(x => x.toString());
 
             expect(result.isSuccess).toBe(true);
             expect(result.getValue()).toBe("25");
@@ -207,9 +207,9 @@ describe('Result<T> - Railway Oriented Programming', () => {
 
         it('should stop at first failure in chain', () => {
             const result = Result.ok(10)
-                .map(x => x * 2)                    // 20
-                .bind(() => Result.fail('Error'))   // FAIL - stops here
-                .map(x => x + 100);                 // Never executed
+                .map(x => x * 2)
+                .bind(() => Result.fail('Error'))
+                .map(x => x + 100);
 
             expect(result.isFailure).toBe(true);
             expect(result.error).toBe('Error');
@@ -236,14 +236,12 @@ describe('Result<T> - Railway Oriented Programming', () => {
     describe('constructor validation', () => {
         it('should throw if success result has error', () => {
             expect(() => {
-                // @ts-expect-error Testing invalid state
                 new Result(true, 'error', 42);
             }).toThrow('A result cannot be successful and contain an error');
         });
 
         it('should throw if failure result has no error', () => {
             expect(() => {
-                // @ts-expect-error Testing invalid state
                 new Result(false, undefined, undefined);
             }).toThrow('A failing result needs to contain an error message');
         });

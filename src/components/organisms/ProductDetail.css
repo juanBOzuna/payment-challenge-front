@@ -1,21 +1,35 @@
+/* Wrapper Container to fix Full Width issue */
 .product-detail {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    /* Center horizontal + Top separation */
+    padding: 40px 20px;
+    /* Internal spacing */
+
     display: grid;
+    grid-template-columns: 1fr;
+    /* Mobile default */
+    gap: 2rem;
+
     animation: fadeIn 0.4s ease-out;
-    padding: 0 1rem;
 }
 
 @media (min-width: 768px) {
     .product-detail {
         grid-template-columns: 1fr 1fr;
+        /* 2 Columns Desktop */
         gap: 3rem;
-        padding: 0;
+        /* Generous gap */
+        padding: 40px 20px;
+        align-items: start;
     }
 }
 
 @media (min-width: 1024px) {
     .product-detail {
-        grid-template-columns: 1.2fr 0.8fr;
         gap: 4rem;
+        /* Even more gap on large screens */
     }
 }
 
@@ -25,34 +39,26 @@
 
 .main-image {
     width: 100%;
-    max-height: 40vh;
-    overflow: hidden;
     background: white;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-@media (min-width: 768px) {
-    .main-image {
-        aspect-ratio: 1;
-        max-height: none;
-        border-radius: 8px;
-        border: 1px solid #EBEBEB;
-    }
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
 }
 
 .main-image img {
     width: 100%;
-    height: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    /* Square for consistency */
     object-fit: contain;
+    /* Ensure whole product is visible */
+    border-radius: 12px;
 }
 
-@media (min-width: 768px) {
-    .main-image img {
-        object-fit: cover;
-    }
-}
+
 
 .info-section {
     display: flex;
@@ -297,5 +303,104 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* Image Zoom Logic */
+.main-image {
+    cursor: zoom-in;
+    position: relative;
+    transition: border-color 0.2s;
+}
+
+.main-image:hover {
+    border-color: #d1d1d1;
+}
+
+.zoom-hint {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.main-image:hover .zoom-hint {
+    opacity: 1;
+}
+
+/* Modal Overlay */
+.image-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    animation: fadeInOverlay 0.2s ease-out;
+    padding: 20px;
+}
+
+.image-modal-content {
+    position: relative;
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-image {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    user-select: none;
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    font-weight: 300;
+    outline: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.close-modal-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes fadeInOverlay {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }

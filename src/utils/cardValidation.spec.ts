@@ -30,9 +30,9 @@ describe('Card Validation Utilities', () => {
         });
 
         it('should return null for unknown card types', () => {
-            expect(detectCardType('3530111333300000')).toBeNull(); // JCB
-            expect(detectCardType('6011111111111117')).toBeNull(); // Discover
-            expect(detectCardType('1234567890123456')).toBeNull(); // Invalid
+            expect(detectCardType('3530111333300000')).toBeNull();
+            expect(detectCardType('6011111111111117')).toBeNull();
+            expect(detectCardType('1234567890123456')).toBeNull();
         });
 
         it('should handle cards with spaces', () => {
@@ -53,13 +53,13 @@ describe('Card Validation Utilities', () => {
         });
 
         it('should reject invalid card numbers', () => {
-            expect(validateCardNumber('4111111111111112')).toBe(false); // Wrong checksum
-            expect(validateCardNumber('1234567890123456')).toBe(false); // Invalid
+            expect(validateCardNumber('4111111111111112')).toBe(false);
+            expect(validateCardNumber('1234567890123456')).toBe(false);
         });
 
         it('should reject cards with invalid length', () => {
-            expect(validateCardNumber('411111111111')).toBe(false); // Too short
-            expect(validateCardNumber('41111111111111111111')).toBe(false); // Too long
+            expect(validateCardNumber('411111111111')).toBe(false);
+            expect(validateCardNumber('41111111111111111111')).toBe(false);
         });
 
         it('should handle cards with spaces', () => {
@@ -96,8 +96,8 @@ describe('Card Validation Utilities', () => {
         });
 
         it('should reject past dates', () => {
-            expect(validateExpiryDate('12/20')).toBe(false); // 2020
-            expect(validateExpiryDate('01/21')).toBe(false); // 2021
+            expect(validateExpiryDate('12/20')).toBe(false);
+            expect(validateExpiryDate('01/21')).toBe(false);
         });
 
         it('should validate current month/year', () => {
@@ -150,10 +150,10 @@ describe('Card Validation Utilities', () => {
         });
 
         it('should reject invalid CVC', () => {
-            expect(validateCVC('12')).toBe(false); // Too short
-            expect(validateCVC('12345')).toBe(false); // Too long
-            expect(validateCVC('abc')).toBe(false); // Non-numeric
-            expect(validateCVC('')).toBe(false); // Empty
+            expect(validateCVC('12')).toBe(false);
+            expect(validateCVC('12345')).toBe(false);
+            expect(validateCVC('abc')).toBe(false);
+            expect(validateCVC('')).toBe(false);
         });
     });
 

@@ -107,7 +107,6 @@ export const StatusStep = ({ onClose }: StatusStepProps) => {
         );
     }
 
-    // ERROR state
     return (
         <div className="status-step status-step--error">
             <div className="status-step__icon status-step__icon--warning">

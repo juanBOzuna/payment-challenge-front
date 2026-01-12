@@ -1,10 +1,9 @@
 :root {
   /* Colors - Premium Blue/Purple Scale */
-  /* Indigo 600 */
-  /* Indigo 700 */
-  /* Pink 500 */
-  /* Gray 50 */
-  --primary-hover: #2968C8;
+  --primary: #4F46E5;
+  /* Morado Corporativo */
+  --primary-hover: #4338CA;
+  --primary-light: #E0E7FF;
 
   --text-main: #1A1A1A;
   --text-secondary: #666666;

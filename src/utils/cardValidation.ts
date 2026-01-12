@@ -13,12 +13,10 @@ export type CardType = 'VISA' | 'MASTERCARD' | null;
 export const detectCardType = (cardNumber: string): CardType => {
     const cleaned = cardNumber.replace(/\s/g, '');
 
-    // VISA: starts with 4
     if (/^4/.test(cleaned)) {
         return 'VISA';
     }
 
-    // MasterCard: starts with 51-55 or 2221-2720
     if (/^5[1-5]/.test(cleaned) || /^2[2-7]/.test(cleaned)) {
         return 'MASTERCARD';
     }
@@ -32,12 +30,10 @@ export const detectCardType = (cardNumber: string): CardType => {
 export const validateCardNumber = (cardNumber: string): boolean => {
     const cleaned = cardNumber.replace(/\s/g, '');
 
-    // Must be 13-19 digits
     if (!/^\d{13,19}$/.test(cleaned)) {
         return false;
     }
 
-    // Luhn algorithm
     let sum = 0;
     let isEven = false;
 

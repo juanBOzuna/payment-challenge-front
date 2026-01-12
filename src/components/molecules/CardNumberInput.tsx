@@ -16,7 +16,6 @@ export const CardNumberInput = ({ value, onChange, onCardTypeDetected, error }: 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const rawValue = e.target.value.replace(/\s/g, '');
 
-        // Only allow digits and max 16 digits
         if (!/^\d*$/.test(rawValue) || rawValue.length > 16) {
             return;
         }
@@ -24,14 +23,12 @@ export const CardNumberInput = ({ value, onChange, onCardTypeDetected, error }: 
         const formatted = formatCardNumber(rawValue);
         onChange(formatted);
 
-        // Detect card type
         const type = detectCardType(rawValue);
         setCardType(type);
         if (onCardTypeDetected) {
             onCardTypeDetected(type);
         }
 
-        // Clear validation error on change
         if (validationError) {
             setValidationError('');
         }

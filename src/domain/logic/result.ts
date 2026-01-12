@@ -5,11 +5,15 @@
  * This pattern makes error handling explicit and composable.
  */
 export class Result<T> {
-    private constructor(
-        public readonly isSuccess: boolean,
-        public readonly error?: string,
-        private readonly _value?: T
-    ) {
+    public readonly isSuccess: boolean;
+    public readonly error?: string;
+    private readonly _value?: T;
+
+    private constructor(isSuccess: boolean, error?: string, value?: T) {
+        this.isSuccess = isSuccess;
+        this.error = error;
+        this._value = value;
+
         if (isSuccess && error) {
             throw new Error('InvalidOperation: A result cannot be successful and contain an error');
         }

@@ -2,25 +2,27 @@ import { useState } from 'react';
 import { useCheckoutFlow } from '../../../hooks/useCheckoutFlow';
 import { CardNumberInput } from '../../molecules/CardNumberInput';
 import { formatExpiryDate } from '../../../utils/cardValidation';
-import type { CardType } from '../../../utils/cardValidation';
 import './CardDeliveryStep.css';
 
 export const CardDeliveryStep = () => {
     const { submitCardAndDelivery, checkout } = useCheckoutFlow();
 
-    // Card data
     const [cardNumber, setCardNumber] = useState('');
-    const [cardType, setCardType] = useState<CardType>(null);
+    // cardType unused, removing state to fix lint.
+    // const [cardType, setCardType] = useState<CardType>(null);
+    // Wait, the error is 'declared but never read'. If I remove it, I might break logic if setCardType is used? 
+    // setCardType is used probably? 
+    // If I remove `cardType`, I should remove `setCardType` too if unused.
+    // But if `setCardType` is passed down, I need to keep the state.
+    // I stands corrected: I will check the file content first to see usage.
     const [expiry, setExpiry] = useState('');
     const [cvc, setCvc] = useState('');
     const [cardHolder, setCardHolder] = useState('');
 
-    // Customer data
     const [name, setName] = useState(checkout.customerName || '');
     const [email, setEmail] = useState(checkout.customerEmail || '');
     const [phone, setPhone] = useState(checkout.customerPhone || '');
 
-    // Delivery data
     const [address, setAddress] = useState(checkout.deliveryAddress || '');
     const [city, setCity] = useState(checkout.deliveryCity || '');
     const [postalCode, setPostalCode] = useState(checkout.deliveryPostalCode || '');
@@ -88,7 +90,6 @@ export const CardDeliveryStep = () => {
                 <CardNumberInput
                     value={cardNumber}
                     onChange={setCardNumber}
-                    onCardTypeDetected={setCardType}
                 />
 
                 <div className="card-delivery-step__field">

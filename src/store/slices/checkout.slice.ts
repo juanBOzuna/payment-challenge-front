@@ -40,7 +40,7 @@ export interface CheckoutState {
     expiresAt: number;
 }
 
-const EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24 hours
+const EXPIRATION_TIME = 24 * 60 * 60 * 1000;
 
 const initialState: CheckoutState = {
     currentStep: 1,
@@ -75,7 +75,6 @@ const checkoutSlice = createSlice({
     name: 'checkout',
     initialState,
     reducers: {
-        // Navigation
         goToStep: (state, action: PayloadAction<CheckoutStep>) => {
             state.currentStep = action.payload;
             state.lastUpdated = Date.now();
@@ -103,7 +102,6 @@ const checkoutSlice = createSlice({
             });
         },
 
-        // Data updates
         setProductData: (state, action: PayloadAction<{ productId: string; productAmount: number; productName: string; productImage: string }>) => {
             state.productId = action.payload.productId;
             state.productAmount = action.payload.productAmount;
@@ -150,7 +148,6 @@ const checkoutSlice = createSlice({
             state.lastUpdated = Date.now();
         },
 
-        // UI state
         setProcessing: (state, action: PayloadAction<boolean>) => {
             state.isProcessing = action.payload;
             if (action.payload) {
@@ -167,7 +164,6 @@ const checkoutSlice = createSlice({
             state.error = null;
         },
 
-        // Recovery
         restoreCheckout: (state, action: PayloadAction<CheckoutState>) => {
             Object.assign(state, action.payload);
         }

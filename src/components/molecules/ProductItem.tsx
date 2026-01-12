@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Product } from '../../domain/models/Product';
-import { Button } from '../atoms/Button';
 import './ProductItem.css';
 
 interface ProductItemProps {
@@ -9,8 +8,13 @@ interface ProductItemProps {
 }
 
 export const ProductItem: React.FC<ProductItemProps> = ({ product, onSelect }) => {
+    // Handler for the entire card click
+    const handleCardClick = () => {
+        onSelect(product);
+    };
+
     return (
-        <article className="product-card">
+        <article className="product-card" onClick={handleCardClick}>
             <div className="product-image-container">
                 <img src={product.imageUrl} alt={product.name} className="product-image" loading="lazy" />
             </div>
@@ -18,11 +22,10 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product, onSelect }) =
                 <h3 className="product-title">{product.name}</h3>
                 <div className="product-meta">
                     <span className="product-price">${product.price.toLocaleString()}</span>
-                    <span className="product-stock">{product.stock} units left</span>
                 </div>
-                <Button onClick={() => onSelect(product)} fullWidth>
-                    Buy Now
-                </Button>
+                <div className="product-footer">
+                    <span className="action-text">Comprar &rarr;</span>
+                </div>
             </div>
         </article>
     );
