@@ -237,6 +237,8 @@
         margin-bottom: 1rem;
         border-radius: 20px;
         /* consistent radius */
+        overflow: hidden;
+        /* Fix footer clipping */
         max-width: 100vw;
     }
 
