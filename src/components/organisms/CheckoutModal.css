@@ -181,15 +181,20 @@
 @media (max-width: 640px) {
     .checkout-modal {
         padding: 1rem;
-        align-items: center;
+        padding-top: 110px;
+        /* Start below header with more space */
+        align-items: flex-start;
+        /* Align to top */
     }
 
     .checkout-modal__content {
-        max-height: 90vh;
+        max-height: calc(100vh - 130px);
+        /* Fit remaining space */
         height: auto;
         width: 100%;
         max-width: 100%;
-        border-radius: 16px;
+        border-radius: 20px;
+        /* consistent radius */
         display: flex;
         flex-direction: column;
     }
@@ -211,8 +216,8 @@
     }
 
     .checkout-modal__header {
-        border-top-left-radius: 16px;
-        border-top-right-radius: 16px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
     }
 
     /* Steps and other internal adjustments */

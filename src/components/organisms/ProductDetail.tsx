@@ -114,7 +114,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy, on
                             fullWidth
                             disabled={product.availableStock === 0}
                         >
-                            Comprar ahora
+                            Pay with credit card
                         </Button>
                         <Button
                             variant="outline"
