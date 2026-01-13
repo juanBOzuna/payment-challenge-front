@@ -31,7 +31,16 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product, onSelect }) =
     return (
         <article className="product-card" onClick={handleCardClick}>
             <div className="product-image-container">
-                <img src={product.imageUrl} alt={product.name} className="product-image" loading="lazy" />
+                <img
+                    src={product.imageUrl}
+                    alt={product.name}
+                    className="product-image"
+                    loading="lazy"
+                    onError={(e) => {
+                        e.currentTarget.src = 'https://placehold.co/400x300?text=Sin+Imagen';
+                        e.currentTarget.onerror = null; // Prevent infinite loop
+                    }}
+                />
             </div>
             <div className="product-info">
                 <div className="product-meta">
