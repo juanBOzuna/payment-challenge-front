@@ -53,7 +53,7 @@ export const HomeView: React.FC = () => {
             <main className="home-main-layout">
                 <aside className="sidebar">
                     <div className="sidebar-sticky">
-                        <h3>Filtros</h3>
+
                         <form onSubmit={handleSearchSubmit} className="search-form">
                             <input
                                 name="search"
@@ -71,7 +71,7 @@ export const HomeView: React.FC = () => {
                         </form>
 
                         <div className="category-list">
-                            <h4>Categorías</h4>
+
                             <ul>
                                 <li className={filters.categoryId === '' ? 'active' : ''}
                                     onClick={() => dispatch(setCategory(''))}>
