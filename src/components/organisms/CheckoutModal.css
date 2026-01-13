@@ -180,43 +180,50 @@
 
 @media (max-width: 640px) {
     .checkout-modal {
-        padding: 0;
-        align-items: flex-end;
+        padding: 1rem;
+        align-items: center;
     }
 
     .checkout-modal__content {
-        max-height: 100vh;
-        height: 100vh;
+        max-height: 90vh;
+        height: auto;
         width: 100%;
         max-width: 100%;
-        border-radius: 0;
+        border-radius: 16px;
         display: flex;
         flex-direction: column;
+    }
+
+    .checkout-modal__close {
+        width: 36px;
+        height: 36px;
+        background: #f3f4f6;
+        color: #333;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
     }
 
     .checkout-modal__body {
         flex: 1;
         overflow-y: auto;
-        padding-bottom: 80px;
-        /* Space for fixed footer if needed */
+        padding-bottom: 20px;
     }
 
     .checkout-modal__header {
-        padding: 1rem;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
     }
 
-    .checkout-modal__body {
-        padding: 1rem;
-    }
-
-    .checkout-modal__footer {
-        padding: 1rem;
-    }
-
+    /* Steps and other internal adjustments */
     .checkout-modal__step {
         width: 1.75rem;
         height: 1.75rem;
         font-size: 0.75rem;
+    }
+
+    .checkout-modal__footer {
+        padding: 1rem;
     }
 }
 
