@@ -1,0 +1,371 @@
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import {
+    setCheckoutItems,
+    setCardData,
+    setCustomerData,
+    setDeliveryData,
+    setTransactionId,
+    setPaymentResult,
+    setProcessing,
+    setError,
+    goToStep,
+    resetCheckout,
+} from '../store/slices/checkout.slice';
+import type { CheckoutItem } from '../store/slices/checkout.slice';
+import { paymentService } from '../infrastructure/api/payment.service';
+import { wompiService } from '../infrastructure/api/wompi.service';
+import {
+    detectCardType,
+    validateCardNumber,
+    validateExpiryDate,
+    validateCVC,
+    validateCardHolder,
+    getLastFourDigits,
+} from '../utils/cardValidation';
+import { openCheckout } from '../store/slices/ui.slice';
+
+export interface CardDeliveryData {
+    cardNumber: string;
+    cvc: string;
+    expiryMonth: string;
+    expiryYear: string;
+    cardHolder: string;
+
+    name: string;
+    email: string;
+    phone: string;
+
+    address: string;
+    city: string;
+    postalCode: string;
+}
+
+
+export const useCheckoutFlow = () => {
+    const dispatch = useAppDispatch();
+    const checkout = useAppSelector(state => state.checkout);
+
+    const startCheckout = (items: CheckoutItem[]) => {
+        dispatch(resetCheckout());
+        dispatch(setCheckoutItems(items));
+        dispatch(goToStep(2));
+        dispatch(openCheckout());
+    };
+
+    const submitCardAndDelivery = async (data: CardDeliveryData): Promise<void> => {
+        try {
+            dispatch(setProcessing(true));
+            dispatch(setError(null));
+
+            const validationResult = validateInputs(data);
+            if (validationResult.isFailure) {
+                dispatch(setError(validationResult.error!));
+                return;
+            }
+
+            const tokenResult = await wompiService.tokenizeCard({
+                number: data.cardNumber.replace(/\s/g, ''),
+                cvc: data.cvc,
+                exp_month: data.expiryMonth,
+                exp_year: data.expiryYear,
+                card_holder: data.cardHolder,
+            });
+
+            if (tokenResult.isFailure) {
+                dispatch(setError(tokenResult.error!));
+                return;
+            }
+
+            const cardToken = tokenResult.getValue();
+            const cardType = detectCardType(data.cardNumber);
+            const lastFour = getLastFourDigits(data.cardNumber);
+
+            dispatch(setCardData({
+                token: cardToken.id,
+                type: cardType,
+                lastFour,
+            }));
+
+            dispatch(setCustomerData({
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+            }));
+
+            dispatch(setDeliveryData({
+                address: data.address,
+                city: data.city,
+                postalCode: data.postalCode,
+            }));
+
+            dispatch(goToStep(3));
+
+        } catch (error) {
+            dispatch(setError(error instanceof Error ? error.message : 'Unknown error'));
+        } finally {
+            dispatch(setProcessing(false));
+        }
+    };
+
+    const processPayment = async (): Promise<void> => {
+        try {
+            dispatch(setProcessing(true));
+          dispatch(setPaymentResult({ status: 'PENDING', message: null, reference: null }));
+            dispatch(setError(null));
+
+            const customerResult = await paymentService.createCustomer({
+                name: checkout.customerName,
+                email: checkout.customerEmail,
+                phone: checkout.customerPhone,
+            });
+
+            if (customerResult.isFailure) {
+                dispatch(setPaymentResult({
+                    status: 'ERROR',
+                    message: customerResult.error!,
+                    reference: null,
+                }));
+                dispatch(goToStep(4));
+                return;
+            }
+
+            const customer = customerResult.getValue();
+
+         const transactionItems = checkout.items.map(item => ({
+                productId: item.productId,
+                quantity: item.quantity
+            }));
+
+            const transactionResult = await paymentService.createTransaction({
+                items: transactionItems,
+                customerId: customer.customerId,
+            });
+
+            if (transactionResult.isFailure) {
+                dispatch(setPaymentResult({
+                    status: 'ERROR',
+                    message: transactionResult.error!,
+                    reference: null,
+                }));
+                dispatch(goToStep(4));
+                return;
+            }
+
+            const transaction = transactionResult.getValue();
+            dispatch(setTransactionId(transaction.transactionId));
+
+           dispatch(goToStep(3.5));
+
+            const acceptanceResult = await paymentService.getAcceptanceToken();
+
+            if (acceptanceResult.isFailure) {
+                dispatch(setPaymentResult({
+                    status: 'ERROR',
+                    message: acceptanceResult.error!,
+                    reference: null,
+                }));
+                dispatch(goToStep(4));
+                return;
+            }
+
+            const { acceptanceToken } = acceptanceResult.getValue();
+
+            const paymentResult = await paymentService.processPayment(
+                transaction.transactionId,
+                {
+                    cardToken: checkout.cardToken!,
+                    acceptanceToken,
+                    customerEmail: checkout.customerEmail,
+                    deliveryAddress: checkout.deliveryAddress,
+                    deliveryCity: checkout.deliveryCity,
+                    deliveryPostalCode: checkout.deliveryPostalCode,
+                }
+            );
+
+            if (paymentResult.isFailure) {
+                const isDeclined = paymentResult.error!.toLowerCase().includes('declineda') ||
+                    paymentResult.error!.toLowerCase().includes('insufficient') ||
+                    paymentResult.error!.toLowerCase().includes('fondos') ||
+                    paymentResult.error!.toLowerCase().includes('rechazada') ||
+                    paymentResult.error!.toLowerCase().includes('declined');
+
+                dispatch(setPaymentResult({
+                    status: isDeclined ? 'DECLINED' : 'ERROR',
+                    message: paymentResult.error!,
+                    reference: null,
+                }));
+                dispatch(goToStep(4));
+                return;
+            }
+
+            const result = paymentResult.getValue();
+
+            if (result.status === 'PENDING') {
+                dispatch(setPaymentResult({
+                    status: 'PENDING',
+                    message: null,
+                    reference: result.wompiReference || null,
+                }));
+               return;
+            }
+
+            dispatch(setPaymentResult({
+                status: result.status,
+                message: result.message || null,
+                reference: result.wompiReference || null,
+            }));
+
+            dispatch(goToStep(4));
+
+        } catch (error) {
+            dispatch(setPaymentResult({
+                status: 'ERROR',
+                message: error instanceof Error ? error.message : 'Unknown error',
+                reference: null,
+            }));
+            dispatch(goToStep(4));
+        } finally {
+            dispatch(setProcessing(false));
+        }
+    };
+
+    const handleStatusChange = async (status: 'APPROVED' | 'DECLINED' | 'ERROR' | 'PENDING') => {
+        console.log('[CHECKOUT] handleStatusChange called with status:', status);
+
+        if (status === 'PENDING') return;
+
+         if (status === 'APPROVED' && checkout.transactionId) {
+            console.log('[CHECKOUT] Payment APPROVED, calling complete endpoint to deduct inventory');
+            try {
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_URL}/transactions/${checkout.transactionId}/complete`,
+                    { method: 'POST' }
+                );
+                const result = await response.json();
+                console.log('[CHECKOUT] Complete endpoint response:', result);
+
+                if (!result.success) {
+                    console.error('[CHECKOUT] Failed to complete payment:', result.message);
+               }
+            } catch (error) {
+                console.error('[CHECKOUT] Error calling complete endpoint:', error);
+            }
+        }
+
+        dispatch(setPaymentResult({
+            status,
+            message: status === 'DECLINED' ? 'Transacción rechazada por el banco' : null,
+            reference: checkout.paymentReference,
+        }));
+        dispatch(goToStep(4));
+    };
+
+   const returnToProducts = () => {
+        dispatch(resetCheckout());
+        dispatch(goToStep(1));
+    };
+ const goBack = () => {
+        if (checkout.currentStep === 3) {
+            dispatch(goToStep(2));
+        }
+    };
+
+    const recoverPaymentState = async (): Promise<void> => {
+        if (checkout.currentStep !== 3.5 || !checkout.transactionId) {
+            return;
+        }
+
+        try {
+            console.log('[RECOVERY] Detected stuck payment state, querying backend...');
+
+            const statusResult = await paymentService.getTransactionStatus(checkout.transactionId);
+
+            if (statusResult.isFailure) {
+                console.error('[RECOVERY] Failed to get transaction status:', statusResult.error);
+                dispatch(setPaymentResult({
+                    status: 'ERROR',
+                    message: 'No se pudo verificar el estado del pago. Por favor contacta soporte.',
+                    reference: null,
+                }));
+                dispatch(goToStep(4));
+                dispatch(setProcessing(false));
+                return;
+            }
+
+            const status = statusResult.getValue();
+            console.log('[RECOVERY] Backend status:', status);
+
+            dispatch(setPaymentResult({
+                status: status.status as any,
+                message: status.message || null,
+                reference: status.wompiReference || null,
+            }));
+
+            if (status.status !== 'PENDING') {
+                dispatch(goToStep(4));
+            }
+
+            dispatch(setProcessing(false));
+        } catch (error) {
+            console.error('[RECOVERY] Error recovering payment state:', error);
+            dispatch(setPaymentResult({
+                status: 'ERROR',
+                message: 'Error al verificar el estado del pago',
+                reference: null,
+            }));
+            dispatch(goToStep(4));
+            dispatch(setProcessing(false));
+        }
+    };
+
+    return {
+        checkout,
+        startCheckout,
+        submitCardAndDelivery,
+        processPayment,
+        handleStatusChange,
+        returnToProducts,
+        goBack,
+        recoverPaymentState,
+    };
+};
+
+function validateInputs(data: CardDeliveryData): { isFailure: boolean; error?: string } {
+    if (!validateCardNumber(data.cardNumber)) {
+        return { isFailure: true, error: 'Número de tarjeta inválido' };
+    }
+
+    if (!validateExpiryDate(`${data.expiryMonth}/${data.expiryYear}`)) {
+        return { isFailure: true, error: 'Fecha de expiración inválida' };
+    }
+
+    if (!validateCVC(data.cvc)) {
+        return { isFailure: true, error: 'CVC inválido' };
+    }
+
+    if (!validateCardHolder(data.cardHolder)) {
+        return { isFailure: true, error: 'Nombre del titular inválido' };
+    }
+
+    if (!data.name || data.name.trim().length < 3) {
+        return { isFailure: true, error: 'Nombre debe tener al menos 3 caracteres' };
+    }
+
+    if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+        return { isFailure: true, error: 'Email inválido' };
+    }
+
+    if (!data.phone || data.phone.length < 10) {
+        return { isFailure: true, error: 'Teléfono inválido' };
+    }
+
+    if (!data.address || data.address.trim().length < 10) {
+        return { isFailure: true, error: 'Dirección debe tener al menos 10 caracteres' };
+    }
+
+    if (!data.city || data.city.trim().length < 3) {
+        return { isFailure: true, error: 'Ciudad inválida' };
+    }
+
+    return { isFailure: false };
+}
