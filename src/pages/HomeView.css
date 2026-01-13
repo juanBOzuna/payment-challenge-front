@@ -134,11 +134,12 @@
 
     .hero-mobile-image {
         display: block;
-        max-height: 45vh;
-
-        width: auto;
-        max-width: 90%;
+        max-height: 40vh;
+        width: 100%;
         object-fit: contain;
+        /* Ensures the whole image is seen without cropping */
+        object-position: bottom;
+        /* Anchors image to bottom */
         margin-top: auto;
     }
 }
