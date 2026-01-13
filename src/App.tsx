@@ -19,12 +19,12 @@ function App() {
     const checkout = useAppSelector((state) => state.checkout);
     const { recoverPaymentState } = useCheckoutFlow();
 
-    // Recover payment state on app load if stuck in processing
+   
     useEffect(() => {
         recoverPaymentState();
-    }, []); // Run only once on mount
+    }, []);
 
-    // Logic: Open if explicit, processing, pending, OR showing result (Step 4)
+   
     const finalIsOpen = isCheckoutOpen ||
         checkout.isProcessing ||
         checkout.paymentStatus === 'PENDING' ||

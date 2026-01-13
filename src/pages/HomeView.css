@@ -11,19 +11,19 @@
     width: 100%;
 }
 
-/* Hero Banner */
+
 .hero-banner {
     width: 100%;
     position: relative;
     display: flex;
     justify-content: flex-end;
-    /* Align content to the right */
+    
     align-items: center;
     background-color: var(--primary-color);
     overflow: hidden;
 }
 
-/* Base Styles (Mobile First) */
+
 .hero-content {
     position: relative;
     z-index: 10;
@@ -69,10 +69,10 @@
 
 .hero-mobile-image {
     display: none;
-    /* Hide by default on desktop, show in mobile query */
+    
 }
 
-/* Desktop Styles */
+
 @media (min-width: 768px) {
     .hero-banner {
         height: 500px;
@@ -110,7 +110,7 @@
     }
 }
 
-/* Mobile Specifics */
+
 @media (max-width: 768px) {
     .hero-banner {
         height: 55vh;
@@ -124,18 +124,18 @@
         align-items: center;
         width: 100%;
         padding-top: 1rem;
-        /* Reduced from 3rem */
+        
     }
 
     .hero-subtitle {
         margin-bottom: 1rem;
-        /* Reduced from 2rem (Global) */
+        
     }
 
     .hero-mobile-image {
         display: block;
         max-height: 45vh;
-        /* Increased from 250px to use available space */
+        
         width: auto;
         max-width: 90%;
         object-fit: contain;
@@ -143,18 +143,18 @@
     }
 }
 
-/* Layout Grid */
+
 .home-main-layout {
     display: grid;
     grid-template-columns: 250px 1fr;
     gap: 3rem;
     max-width: 1440px !important;
-    /* Force Max Width */
+    
     margin: 3rem auto;
     padding: 0 2rem;
 }
 
-/* Sidebar */
+
 .sidebar {
     background: #f9f9f9;
     padding: 1.5rem;
@@ -226,7 +226,7 @@
     background-color: transparent;
 }
 
-/* Premium Active State: Border Left + Bold Color */
+
 .category-list li.active {
     background-color: transparent;
     color: var(--primary-color);
@@ -247,12 +247,12 @@
     font-size: 0.9rem;
 }
 
-/* Content Area */
+
 .content-area {
     width: 100%;
 }
 
-/* GRID FIX: Single definition, explicitly ordered */
+
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -262,7 +262,7 @@
 @media (min-width: 1024px) {
     .product-grid {
         grid-template-columns: repeat(4, 1fr) !important;
-        /* Force 4 columns on desktop */
+        
     }
 }
 
@@ -301,7 +301,7 @@
     }
 }
 
-/* Pagination */
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -329,11 +329,11 @@
     color: #666;
 }
 
-/* Response Mobile */
+
 @media (max-width: 768px) {
     .home-main-layout {
         grid-template-columns: 1fr;
-        /* Stack sidebar and content */
+        
         gap: 2rem;
         padding: 0 1rem;
     }
@@ -346,7 +346,7 @@
 
     .product-grid {
         grid-template-columns: 1fr !important;
-        /* Single column grid for simplicity on mobile as per requirement */
+        
         gap: 1.5rem;
     }
 }

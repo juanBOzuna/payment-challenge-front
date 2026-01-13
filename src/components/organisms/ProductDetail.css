@@ -1,4 +1,4 @@
-/* ProductDetail.css */
+
 
 .product-detail {
     display: grid;
@@ -17,7 +17,7 @@
     }
 }
 
-/* Image Section */
+
 .image-section {
     position: relative;
     background: #fff;
@@ -52,7 +52,7 @@
     opacity: 1;
 }
 
-/* Info Section */
+
 .info-section {
     display: flex;
     flex-direction: column;
@@ -89,7 +89,7 @@
     font-size: 0.9rem;
 }
 
-/* Price */
+
 .price-section {
     margin-bottom: 1.5rem;
     padding-bottom: 1.5rem;
@@ -116,11 +116,11 @@
 
 .price-details {
     color: var(--brand-color, #6a0dad);
-    /* Purple hint */
+    
     font-size: 0.95rem;
 }
 
-/* Stock */
+
 .stock-info {
     margin-bottom: 1.5rem;
     font-weight: 500;
@@ -138,7 +138,7 @@
     color: #d32f2f;
 }
 
-/* Styles for Quantity Selector */
+
 .quantity-selector-section {
     margin-bottom: 1.5rem;
     display: flex;
@@ -197,7 +197,7 @@
     color: var(--text-secondary, #888);
 }
 
-/* Shipping */
+
 .shipping-info {
     margin-bottom: 2rem;
     display: flex;
@@ -221,7 +221,7 @@
     font-size: 0.9rem;
 }
 
-/* CTA Buttons */
+
 .cta-section {
     display: flex;
     flex-direction: column;
@@ -229,13 +229,9 @@
     margin-bottom: 2.5rem;
 }
 
-/* @media (min-width: 480px) {
-    .cta-section {
-        flex-direction: row;
-    }
-} */
 
-/* Specs & Description */
+
+
 .specs-section,
 .description-section {
     margin-bottom: 2rem;
@@ -267,7 +263,7 @@
     color: var(--text-secondary, #444);
 }
 
-/* Modal Overlay */
+
 .image-modal-overlay {
     position: fixed;
     top: 0;

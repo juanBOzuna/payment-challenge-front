@@ -17,15 +17,10 @@ export interface CardTokenResponse {
     created_at: string;
 }
 
-/**
- * Wompi Service - Direct integration with Wompi API
- * Uses Railway Oriented Programming with Result<T>
- */
+
 export const wompiService = {
-    /**
-     * Tokenize credit card with Wompi
-     * This is called directly from frontend for PCI compliance
-     */
+   
+   
     async tokenizeCard(cardData: CardData): Promise<Result<CardTokenResponse>> {
         try {
             const validation = this.validateCardData(cardData);
@@ -77,9 +72,7 @@ export const wompiService = {
         }
     },
 
-    /**
-     * Validate card data before tokenization
-     */
+   
     validateCardData(cardData: CardData): Result<void> {
         if (!cardData.number || cardData.number.length < 13) {
             return Result.fail('Invalid card number');

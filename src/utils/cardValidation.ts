@@ -1,15 +1,7 @@
-/**
- * Card Validation Utilities
- * Includes Luhn algorithm, card type detection, and format validation
- */
 
 export type CardType = 'VISA' | 'MASTERCARD' | null;
 
-/**
- * Detect card type from card number
- * VISA: starts with 4
- * MasterCard: starts with 51-55 or 2221-2720
- */
+
 export const detectCardType = (cardNumber: string): CardType => {
     const cleaned = cardNumber.replace(/\s/g, '');
 
@@ -24,9 +16,7 @@ export const detectCardType = (cardNumber: string): CardType => {
     return null;
 };
 
-/**
- * Validate card number using Luhn algorithm
- */
+
 export const validateCardNumber = (cardNumber: string): boolean => {
     const cleaned = cardNumber.replace(/\s/g, '');
 
@@ -54,18 +44,14 @@ export const validateCardNumber = (cardNumber: string): boolean => {
     return sum % 10 === 0;
 };
 
-/**
- * Format card number with spaces (4 digits per group)
- */
+
 export const formatCardNumber = (value: string): string => {
     const cleaned = value.replace(/\s/g, '');
     const groups = cleaned.match(/.{1,4}/g) || [];
     return groups.join(' ');
 };
 
-/**
- * Validate expiry date (MM/YY format)
- */
+
 export const validateExpiryDate = (expiry: string): boolean => {
     if (!/^\d{2}\/\d{2}$/.test(expiry)) {
         return false;
@@ -92,9 +78,7 @@ export const validateExpiryDate = (expiry: string): boolean => {
     return true;
 };
 
-/**
- * Format expiry date as MM/YY
- */
+
 export const formatExpiryDate = (value: string): string => {
     const cleaned = value.replace(/\D/g, '');
 
@@ -105,31 +89,23 @@ export const formatExpiryDate = (value: string): string => {
     return cleaned;
 };
 
-/**
- * Validate CVC (3 or 4 digits)
- */
+
 export const validateCVC = (cvc: string): boolean => {
     return /^\d{3,4}$/.test(cvc);
 };
 
-/**
- * Validate card holder name
- */
+
 export const validateCardHolder = (name: string): boolean => {
     return name.trim().length >= 3 && /^[a-zA-Z\s]+$/.test(name);
 };
 
-/**
- * Get last 4 digits of card number
- */
+
 export const getLastFourDigits = (cardNumber: string): string => {
     const cleaned = cardNumber.replace(/\s/g, '');
     return cleaned.slice(-4);
 };
 
-/**
- * Mask card number (show only last 4 digits)
- */
+
 export const maskCardNumber = (cardNumber: string): string => {
     const lastFour = getLastFourDigits(cardNumber);
     return `**** **** **** ${lastFour}`;

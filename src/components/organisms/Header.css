@@ -12,7 +12,7 @@
     width: 100%;
     padding: 0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    /* Subtle shadow */
+    
 }
 
 .header-content {
@@ -22,24 +22,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* BOXED LAYOUT FIX: Add padding here to protect content from edges */
+    
     padding: 0 var(--space-lg);
 }
 
 .header-logo {
     font-family: var(--font-family);
     font-size: 1.5rem;
-    /* text-2xl */
+    
     font-weight: 800;
-    /* ExtraBold */
+    
     color: #6A27A4;
-    /* LinkBox Corporate Purple (Fixed) */
+    
     letter-spacing: -0.03em;
 }
 
 .header-logo-link {
     color: inherit;
-    /* Keep the purple */
+    
     text-decoration: none;
     cursor: pointer;
     transition: opacity 0.2s;
@@ -67,7 +67,7 @@
 
 .cart-icon-svg {
     color: #374151;
-    /* text-gray-700 */
+    
     width: 26px;
     height: 26px;
 }
@@ -75,7 +75,7 @@
 .cart-badge {
     position: absolute;
     top: 4px;
-    /* Adjusted for clean positioning */
+    
     right: 4px;
     background-color: #EF4444;
     color: white;
@@ -84,12 +84,12 @@
     height: 18px;
     min-width: 18px;
     border-radius: 9999px;
-    /* Pill shape */
+    
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0 4px;
     border: 2px solid white;
-    /* Clean cut against icon/bg */
+    
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }

@@ -12,10 +12,10 @@ export const HomeView: React.FC = () => {
     const navigate = useNavigate();
     const { items, status, filters, meta } = useAppSelector((state) => state.products);
 
-    // Initial load
+    
     useEffect(() => {
         dispatch(fetchProducts());
-    }, [dispatch, filters]); // Re-fetch when filters change (including page)
+    }, [dispatch, filters]); 
 
     const handleProductSelect = (product: Product) => {
         navigate(`/product/${product.id}`);
@@ -78,7 +78,7 @@ export const HomeView: React.FC = () => {
                                     Todas
                                 </li>
                                 {/* Categories should ideally come from API, hardcoded for now or fetch categories too */}
-                                <li className={filters.categoryId === 'clothing' ? 'active' : ''} // Example ID
+                                <li className={filters.categoryId === 'clothing' ? 'active' : ''} 
                                     onClick={() => dispatch(setCategory('clothing'))}>
                                     Ropa
                                 </li>

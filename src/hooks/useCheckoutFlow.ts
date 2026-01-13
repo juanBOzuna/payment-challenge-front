@@ -270,12 +270,9 @@ export const useCheckoutFlow = () => {
         }
     };
 
-    /**
-     * Recover Payment State - Called on app load
-     * If checkout is stuck in step 3.5 with a transactionId, query backend for actual status
-     */
+    
     const recoverPaymentState = async (): Promise<void> => {
-        // Only recover if we're in processing step with a transaction ID
+       
         if (checkout.currentStep !== 3.5 || !checkout.transactionId) {
             return;
         }
@@ -335,10 +332,7 @@ export const useCheckoutFlow = () => {
     };
 };
 
-/**
- * Validate all inputs before tokenization
- * Returns Result<void> for ROP pattern
- */
+
 function validateInputs(data: CardDeliveryData): { isFailure: boolean; error?: string } {
     if (!validateCardNumber(data.cardNumber)) {
         return { isFailure: true, error: 'Número de tarjeta inválido' };

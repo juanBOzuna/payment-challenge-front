@@ -17,9 +17,7 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({ children }) => {
                 </div>
             </header>
 
-            {/* <div className="info-banner">
-                <p className="info-text">Aprovecha nuestras promociones</p>
-            </div> */}
+          
 
             <main className="mobile-content">
                 {children}
