@@ -100,7 +100,6 @@
     cursor: not-allowed;
 }
 
-/* Mobile optimization */
 @media (max-width: 640px) {
     .card-delivery-step {
         gap: 1.5rem;
@@ -108,7 +107,6 @@
 
     .card-delivery-step__field input {
         font-size: 16px;
-        /* Prevent zoom on iOS */
     }
 }
 

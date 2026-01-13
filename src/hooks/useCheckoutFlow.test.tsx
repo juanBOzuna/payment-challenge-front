@@ -8,11 +8,9 @@ import { wompiService } from '../infrastructure/api/wompi.service';
 import { Result } from '../domain/logic/result';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-// Mock dependencies
 vi.mock('../infrastructure/api/payment.service');
 vi.mock('../infrastructure/api/wompi.service');
 
-// Mock data
 const mockCustomer = { customerId: 'cust_123', email: 'test@test.com' };
 const mockTransaction = {
     transactionId: 'tx_123',
@@ -24,7 +22,6 @@ const mockTransaction = {
 const mockAcceptance = { acceptanceToken: 'token_abc', permalink: 'http://...' };
 const mockPaymentSuccess = { status: 'APPROVED', transactionId: 'tx_123', wompiReference: 'ref_123' };
 
-// Setup helper
 const createWrapper = () => {
     const store = configureStore({
         reducer: { checkout: checkoutReducer },

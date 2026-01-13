@@ -1,8 +1,7 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { removeFromCart, updateQuantity } from '../../store/slices/cart.slice';
-import { useCheckoutFlow } from '../../hooks/useCheckoutFlow'; // We can't use hook inside callback easily if not top level
-import './CartDrawer.css'; // Ensure CSS fits
-
+import { useCheckoutFlow } from '../../hooks/useCheckoutFlow'; 
+import './CartDrawer.css';
 interface CartDrawerProps {
     isOpen: boolean;
     onClose: () => void;

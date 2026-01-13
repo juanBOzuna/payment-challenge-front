@@ -13,7 +13,6 @@ interface ProductItemProps {
 export const ProductItem: React.FC<ProductItemProps> = ({ product, onSelect }) => {
     const dispatch = useAppDispatch();
 
-    // Handler for the entire card click
     const handleCardClick = () => {
         onSelect(product);
     };

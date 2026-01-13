@@ -229,11 +229,11 @@
     margin-bottom: 2.5rem;
 }
 
-@media (min-width: 480px) {
+/* @media (min-width: 480px) {
     .cta-section {
         flex-direction: row;
     }
-}
+} */
 
 /* Specs & Description */
 .specs-section,

@@ -1,6 +1,4 @@
-/* Cart Drawer Styles */
 
-/* Overlay */
 .cart-overlay {
     position: fixed;
     top: 0;
@@ -20,7 +18,6 @@
     visibility: visible;
 }
 
-/* Drawer Panel */
 .cart-drawer {
     position: fixed;
     top: 0;
@@ -40,7 +37,6 @@
     transform: translateX(0);
 }
 
-/* Header (Sticky) */
 .cart-header {
     padding: 20px;
     border-bottom: 1px solid #f3f4f6;
@@ -79,14 +75,12 @@
     color: #111;
 }
 
-/* Body (Scrollable) */
 .cart-body {
     flex: 1;
     overflow-y: auto;
     padding: 0;
 }
 
-/* Empty State */
 .cart-empty-state {
     display: flex;
     align-items: center;
@@ -96,7 +90,6 @@
     font-size: 1rem;
 }
 
-/* Cart Item */
 .cart-item {
     display: flex;
     align-items: center;
@@ -131,7 +124,6 @@
     font-size: 0.9rem;
 }
 
-/* Controls */
 .cart-controls {
     display: flex;
     align-items: center;
@@ -189,7 +181,6 @@
     color: #ef4444;
 }
 
-/* Footer (Sticky with Shadow) */
 .cart-footer {
     padding: 20px;
     border-top: 1px solid #eee;
@@ -234,7 +225,6 @@
     background: #582187;
 }
 
-/* Mobile Responsive */
 @media (max-width: 640px) {
     .cart-drawer {
         width: 100%;

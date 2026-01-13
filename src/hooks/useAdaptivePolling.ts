@@ -49,15 +49,19 @@ export const useAdaptivePolling = ({
         if (!transactionId) return;
 
         try {
+            console.log('[POLLING] Checking transaction status:', transactionId);
             const response = await fetch(`${import.meta.env.VITE_API_URL}/transactions/${transactionId}/status`);
             const data = await response.json();
 
+            console.log('[POLLING] Received status:', data.status);
+
             if (data.status !== 'PENDING') {
+                console.log('[POLLING] Status changed from PENDING to:', data.status);
                 stopPolling();
                 onStatusChange(data.status);
             }
         } catch (error) {
-            console.error('Polling error:', error);
+            console.error('[POLLING] Error:', error);
         }
     }, [transactionId, onStatusChange, stopPolling]);
 

@@ -8,13 +8,6 @@ export const CardDeliveryStep = () => {
     const { submitCardAndDelivery, checkout } = useCheckoutFlow();
 
     const [cardNumber, setCardNumber] = useState('');
-    // cardType unused, removing state to fix lint.
-    // const [cardType, setCardType] = useState<CardType>(null);
-    // Wait, the error is 'declared but never read'. If I remove it, I might break logic if setCardType is used? 
-    // setCardType is used probably? 
-    // If I remove `cardType`, I should remove `setCardType` too if unused.
-    // But if `setCardType` is passed down, I need to keep the state.
-    // I stands corrected: I will check the file content first to see usage.
     const [expiry, setExpiry] = useState('');
     const [cvc, setCvc] = useState('');
     const [cardHolder, setCardHolder] = useState('');
@@ -77,7 +70,6 @@ export const CardDeliveryStep = () => {
 
     return (
         <form onSubmit={handleSubmit} className="card-delivery-step">
-            {/* Card Information */}
             <section className="card-delivery-step__section">
                 <h3 className="card-delivery-step__title">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -243,7 +235,7 @@ export const CardDeliveryStep = () => {
             {/* Error Message near Action Button */}
             {checkout.error && (
                 <div className="card-delivery-step__error-message" role="alert">
-                    ⚠️ {checkout.error}
+                     {checkout.error}
                 </div>
             )}
 

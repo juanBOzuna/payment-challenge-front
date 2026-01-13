@@ -159,7 +159,7 @@ export const SummaryStep = () => {
             </button>
 
             <p className="summary-step__disclaimer">
-                🔒 Tu información está protegida y encriptada
+                 Tu información está protegida y encriptada
             </p>
         </div>
     );

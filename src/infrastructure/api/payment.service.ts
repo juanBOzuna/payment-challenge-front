@@ -52,14 +52,7 @@ export interface WompiAcceptanceTokenResponse {
     permalink: string;
 }
 
-/**
- * Payment Service - Railway Oriented Programming
- * All methods return Result<T> for explicit error handling
- */
 export const paymentService = {
-    /**
-     * Create a new customer
-     */
     async createCustomer(data: CreateCustomerDto): Promise<Result<CreateCustomerResponse>> {
         try {
             const response = await fetch(`${API_URL}/customers`, {
@@ -80,9 +73,6 @@ export const paymentService = {
         }
     },
 
-    /**
-     * Create a new transaction
-     */
     async createTransaction(data: CreateTransactionDto): Promise<Result<CreateTransactionResponse>> {
         try {
             const response = await fetch(`${API_URL}/transactions`, {
@@ -103,9 +93,6 @@ export const paymentService = {
         }
     },
 
-    /**
-     * Process payment with Wompi
-     */
     async processPayment(
         transactionId: string,
         data: ProcessPaymentDto
@@ -129,9 +116,6 @@ export const paymentService = {
         }
     },
 
-    /**
-     * Get Wompi acceptance token
-     */
     async getAcceptanceToken(): Promise<Result<WompiAcceptanceTokenResponse>> {
         try {
             const response = await fetch(`${API_URL}/transactions/wompi/acceptance-token`);
@@ -139,6 +123,22 @@ export const paymentService = {
             if (!response.ok) {
                 const error = await response.json();
                 return Result.fail(error.message || 'Failed to get acceptance token');
+            }
+
+            const data = await response.json();
+            return Result.ok(data);
+        } catch (error) {
+            return Result.fail(error instanceof Error ? error.message : 'Network error');
+        }
+    },
+
+    async getTransactionStatus(transactionId: string): Promise<Result<ProcessPaymentResponse>> {
+        try {
+            const response = await fetch(`${API_URL}/transactions/${transactionId}/status`);
+
+            if (!response.ok) {
+                const error = await response.json();
+                return Result.fail(error.message || 'Failed to get transaction status');
             }
 
             const data = await response.json();
