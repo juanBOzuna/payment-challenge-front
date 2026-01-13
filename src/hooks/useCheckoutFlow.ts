@@ -11,6 +11,7 @@ import {
     goToStep,
     resetCheckout,
 } from '../store/slices/checkout.slice';
+import { clearCart } from '../store/slices/cart.slice';
 import type { CheckoutItem } from '../store/slices/checkout.slice';
 import { paymentService } from '../infrastructure/api/payment.service';
 import { wompiService } from '../infrastructure/api/wompi.service';
@@ -110,7 +111,7 @@ export const useCheckoutFlow = () => {
     const processPayment = async (): Promise<void> => {
         try {
             dispatch(setProcessing(true));
-          dispatch(setPaymentResult({ status: 'PENDING', message: null, reference: null }));
+            dispatch(setPaymentResult({ status: 'PENDING', message: null, reference: null }));
             dispatch(setError(null));
 
             const customerResult = await paymentService.createCustomer({
@@ -131,7 +132,7 @@ export const useCheckoutFlow = () => {
 
             const customer = customerResult.getValue();
 
-         const transactionItems = checkout.items.map(item => ({
+            const transactionItems = checkout.items.map(item => ({
                 productId: item.productId,
                 quantity: item.quantity
             }));
@@ -154,7 +155,7 @@ export const useCheckoutFlow = () => {
             const transaction = transactionResult.getValue();
             dispatch(setTransactionId(transaction.transactionId));
 
-           dispatch(goToStep(3.5));
+            dispatch(goToStep(3.5));
 
             const acceptanceResult = await paymentService.getAcceptanceToken();
 
@@ -206,7 +207,7 @@ export const useCheckoutFlow = () => {
                     message: null,
                     reference: result.wompiReference || null,
                 }));
-               return;
+                return;
             }
 
             dispatch(setPaymentResult({
@@ -234,7 +235,7 @@ export const useCheckoutFlow = () => {
 
         if (status === 'PENDING') return;
 
-         if (status === 'APPROVED' && checkout.transactionId) {
+        if (status === 'APPROVED' && checkout.transactionId) {
             console.log('[CHECKOUT] Payment APPROVED, calling complete endpoint to deduct inventory');
             try {
                 const response = await fetch(
@@ -246,10 +247,12 @@ export const useCheckoutFlow = () => {
 
                 if (!result.success) {
                     console.error('[CHECKOUT] Failed to complete payment:', result.message);
-               }
+                }
             } catch (error) {
                 console.error('[CHECKOUT] Error calling complete endpoint:', error);
             }
+            // Limpiar el carrito después de una compra exitosa
+            dispatch(clearCart());
         }
 
         dispatch(setPaymentResult({
@@ -260,19 +263,19 @@ export const useCheckoutFlow = () => {
         dispatch(goToStep(4));
     };
 
-   const returnToProducts = () => {
+    const returnToProducts = () => {
         dispatch(resetCheckout());
         dispatch(goToStep(1));
     };
- const goBack = () => {
+    const goBack = () => {
         if (checkout.currentStep === 3) {
             dispatch(goToStep(2));
         }
     };
 
-    
+
     const recoverPaymentState = async (): Promise<void> => {
-       
+
         if (checkout.currentStep !== 3.5 || !checkout.transactionId) {
             return;
         }
