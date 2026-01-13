@@ -154,7 +154,7 @@ export const SummaryStep = () => {
                         Procesando Pago...
                     </>
                 ) : (
-                    `Pagar $${checkout.totalAmount.toLocaleString('es-CO')}`
+                    `Pay with credit card $${checkout.totalAmount.toLocaleString('es-CO')}`
                 )}
             </button>
 

@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { removeFromCart, updateQuantity } from '../../store/slices/cart.slice';
-import { useCheckoutFlow } from '../../hooks/useCheckoutFlow'; 
+import { useCheckoutFlow } from '../../hooks/useCheckoutFlow';
 import './CartDrawer.css';
 interface CartDrawerProps {
     isOpen: boolean;
@@ -96,7 +96,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
                         disabled={items.length === 0}
                         onClick={handleCheckout}
                     >
-                        Ir a Pagar
+                        Pay with credit card
                     </button>
                 </footer>
             </div>
