@@ -12,13 +12,13 @@ export const HomeView: React.FC = () => {
     const navigate = useNavigate();
     const { items, status, filters, meta } = useAppSelector((state) => state.products);
 
-    
+
     useEffect(() => {
         dispatch(fetchProducts());
-    }, [dispatch, filters]); 
+    }, [dispatch, filters]);
 
     const handleProductSelect = (product: Product) => {
-        navigate(`/product/${product.id}`);
+        navigate(`/product/${product.slug}`);
     };
 
     const handlePageChange = (newPage: number) => {
@@ -77,8 +77,8 @@ export const HomeView: React.FC = () => {
                                     onClick={() => dispatch(setCategory(''))}>
                                     Todas
                                 </li>
-                                {/* Categories should ideally come from API, hardcoded for now or fetch categories too */}
-                                <li className={filters.categoryId === 'clothing' ? 'active' : ''} 
+
+                                <li className={filters.categoryId === 'clothing' ? 'active' : ''}
                                     onClick={() => dispatch(setCategory('clothing'))}>
                                     Ropa
                                 </li>
@@ -88,7 +88,7 @@ export const HomeView: React.FC = () => {
                                 </li>
                             </ul>
                         </div>
-                        {/* Clear Filters */}
+
                         {(filters.search || filters.categoryId) && (
                             <button onClick={() => dispatch(resetFilters())} className="reset-filters-btn">
                                 Limpiar Filtros
@@ -123,7 +123,7 @@ export const HomeView: React.FC = () => {
                         ))}
                     </div>
 
-                    {/* Pagination Controls */}
+
                     {meta.total > 0 && (
                         <div className="pagination">
                             <button

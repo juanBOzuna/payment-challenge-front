@@ -59,7 +59,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBuy, on
                     <div className="stock-info">
                         {product.availableStock > 5 ? (
                             <div className="in-stock">
-                                <span>Disponible   {product.availableStock} unidades</span>
+                                <span>Disponible • {product.availableStock} unidades</span>
                             </div>
                         ) : product.availableStock > 0 ? (
                             <div className="low-stock">

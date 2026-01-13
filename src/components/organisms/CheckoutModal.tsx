@@ -95,7 +95,7 @@ export const CheckoutModal = ({ isOpen, onClose }: CheckoutModalProps) => {
                     {checkout.currentStep === 4 && <StatusStep onClose={handleClose} />}
                 </div>
 
-                {/* Footer */}
+
                 {showBackButton && (
                     <div className="checkout-modal__footer">
                         <button

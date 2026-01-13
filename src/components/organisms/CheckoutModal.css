@@ -147,7 +147,7 @@
     transition: all 0.2s ease;
     border: none;
     min-height: 44px;
-    /* Touch-friendly */
+
 }
 
 .checkout-modal__button--primary {
@@ -177,7 +177,7 @@
     cursor: not-allowed;
 }
 
-/* Mobile optimization */
+
 @media (max-width: 640px) {
     .checkout-modal {
         padding: 0;

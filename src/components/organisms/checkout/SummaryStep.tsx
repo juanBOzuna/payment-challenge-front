@@ -23,7 +23,7 @@ export const SummaryStep = () => {
 
     return (
         <div className="summary-step">
-            {/* Product Info */}
+
             <section className="summary-step__section">
                 <h3 className="summary-step__title">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -55,7 +55,7 @@ export const SummaryStep = () => {
                 </div>
             </section>
 
-            {/* Cost Breakdown */}
+
             <section className="summary-step__section">
                 <h3 className="summary-step__title">
                     Resumen de Costos
@@ -81,7 +81,7 @@ export const SummaryStep = () => {
                 </div>
             </section>
 
-            {/* Delivery Info */}
+
             <section className="summary-step__section">
                 <h3 className="summary-step__title">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -116,7 +116,7 @@ export const SummaryStep = () => {
                 </div>
             </section>
 
-            {/* Payment Method */}
+
             <section className="summary-step__section">
                 <h3 className="summary-step__title">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -142,7 +142,7 @@ export const SummaryStep = () => {
                 </div>
             </section>
 
-            {/* Pay Button */}
+
             <button
                 onClick={handlePayment}
                 className="summary-step__pay-button"
@@ -159,7 +159,7 @@ export const SummaryStep = () => {
             </button>
 
             <p className="summary-step__disclaimer">
-                 Tu información está protegida y encriptada
+                Tu información está protegida y encriptada
             </p>
         </div>
     );

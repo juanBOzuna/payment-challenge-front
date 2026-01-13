@@ -44,6 +44,10 @@ export const fetchProducts = createAsyncThunk('catalog/fetchProducts', async (_,
     return await ProductService.getAll(filters);
 });
 
+export const fetchProductBySlug = createAsyncThunk('catalog/fetchProductBySlug', async (slug: string) => {
+    return await ProductService.getBySlug(slug);
+});
+
 export const catalogSlice = createSlice({
     name: 'catalog',
     initialState,
@@ -53,7 +57,7 @@ export const catalogSlice = createSlice({
         },
         setSearch: (state, action: PayloadAction<string>) => {
             state.filters.search = action.payload;
-            state.filters.page = 1; // Reset to first page on new search
+            state.filters.page = 1;
         },
         setCategory: (state, action: PayloadAction<string>) => {
             state.filters.categoryId = action.payload;
@@ -76,6 +80,22 @@ export const catalogSlice = createSlice({
             .addCase(fetchProducts.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message || 'Something went wrong';
+            })
+            .addCase(fetchProductBySlug.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchProductBySlug.fulfilled, (state, action: PayloadAction<Product>) => {
+                state.status = 'succeeded';
+                const index = state.items.findIndex(p => p.id === action.payload.id);
+                if (index !== -1) {
+                    state.items[index] = action.payload;
+                } else {
+                    state.items.push(action.payload);
+                }
+            })
+            .addCase(fetchProductBySlug.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message || 'Failed to load product';
             });
     },
 });

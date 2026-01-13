@@ -23,4 +23,5 @@ export interface Product {
     averageRating: number;
     reviewCount: number;
     isActive: boolean;
+    slug: string;
 }

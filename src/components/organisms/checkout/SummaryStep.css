@@ -215,7 +215,7 @@
     margin: 0;
 }
 
-/* Mobile optimization */
+
 @media (max-width: 640px) {
     .summary-step__product-image {
         width: 60px;

@@ -57,11 +57,11 @@
     margin-top: -0.25rem;
 }
 
-/* Mobile optimization */
+
 @media (max-width: 640px) {
     .card-number-input__field {
         font-size: 16px;
-        /* Prevent zoom on iOS */
+
         padding: 0.875rem 3.5rem 0.875rem 1rem;
     }
 }

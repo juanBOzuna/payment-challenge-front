@@ -4,13 +4,13 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { useCheckoutFlow } from '../hooks/useCheckoutFlow';
 import { Header } from '../components/organisms/Header';
 import { ProductDetail } from '../components/organisms/ProductDetail';
-import { fetchProducts } from '../store/slices/products.slice';
+import { fetchProducts, fetchProductBySlug } from '../store/slices/products.slice';
 import { addToCart } from '../store/slices/cart.slice';
 import { openCart } from '../store/slices/ui.slice';
 import './ProductPage.css';
 
 export const ProductDetailPage: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
+    const { slug } = useParams<{ slug: string }>();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -18,13 +18,16 @@ export const ProductDetailPage: React.FC = () => {
     const { items, status } = useAppSelector((state) => state.products);
     const { startCheckout } = useCheckoutFlow();
 
+    // Try to find product in current state
+    const product = items.find(p => p.slug === slug);
+
     useEffect(() => {
-        if (status === 'idle') {
+        if (!product && slug) {
+            dispatch(fetchProductBySlug(slug));
+        } else if (status === 'idle') {
             dispatch(fetchProducts());
         }
-    }, [dispatch, status]);
-
-    const product = items.find(p => p.id === id);
+    }, [dispatch, slug, product, status]);
 
     const handleBuy = (quantity: number) => {
         if (!product) return;

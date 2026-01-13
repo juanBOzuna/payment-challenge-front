@@ -19,12 +19,12 @@ function App() {
     const checkout = useAppSelector((state) => state.checkout);
     const { recoverPaymentState } = useCheckoutFlow();
 
-   
+
     useEffect(() => {
         recoverPaymentState();
     }, []);
 
-   
+
     const finalIsOpen = isCheckoutOpen ||
         checkout.isProcessing ||
         checkout.paymentStatus === 'PENDING' ||
@@ -44,7 +44,7 @@ function App() {
 
                 <Routes>
                     <Route path="/" element={<HomeView />} />
-                    <Route path="/product/:id" element={<ProductDetailPage />} />
+                    <Route path="/product/:slug" element={<ProductDetailPage />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </div>

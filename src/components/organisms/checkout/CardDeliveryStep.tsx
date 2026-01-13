@@ -129,7 +129,7 @@ export const CardDeliveryStep = () => {
                 </div>
             </section>
 
-            {/* Customer Information */}
+
             <section className="card-delivery-step__section">
                 <h3 className="card-delivery-step__title">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -179,7 +179,7 @@ export const CardDeliveryStep = () => {
                 </div>
             </section>
 
-            {/* Delivery Information */}
+
             <section className="card-delivery-step__section">
                 <h3 className="card-delivery-step__title">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -232,14 +232,14 @@ export const CardDeliveryStep = () => {
                 </div>
             </section>
 
-            {/* Error Message near Action Button */}
+
             {checkout.error && (
                 <div className="card-delivery-step__error-message" role="alert">
-                     {checkout.error}
+                    {checkout.error}
                 </div>
             )}
 
-            {/* Submit Button */}
+
             <button
                 type="submit"
                 className="card-delivery-step__submit"

@@ -10,9 +10,19 @@ export const ProductService = {
         if (params?.search) query.append('search', params.search);
         if (params?.categoryId) query.append('categorySlug', params.categoryId);
 
-        const response = await fetch(`${API_URL}/products?${query.toString()}`);
+        const queryString = query.toString();
+        const url = queryString ? `${API_URL}/products?${queryString}` : `${API_URL}/products`;
+        const response = await fetch(url);
         if (!response.ok) {
             throw new Error('Failed to fetch products');
+        }
+        return response.json();
+    },
+
+    getBySlug: async (slug: string): Promise<Product> => {
+        const response = await fetch(`${API_URL}/products/${slug}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch product');
         }
         return response.json();
     },

@@ -28,11 +28,12 @@ describe('productsSlice', () => {
     });
 
     it('should return initial state', () => {
-        expect(productsReducer(undefined, { type: 'unknown' })).toEqual({
-            items: [],
-            status: 'idle',
-            error: null,
-        });
+        const state = productsReducer(undefined, { type: 'unknown' });
+        expect(state.items).toEqual([]);
+        expect(state.status).toBe('idle');
+        expect(state.error).toBeNull();
+        expect(state.meta).toBeDefined();
+        expect(state.filters).toBeDefined();
     });
 
     describe('fetchProducts', () => {
@@ -44,10 +45,13 @@ describe('productsSlice', () => {
 
         it('should handle fulfilled state', () => {
             const products = [mockProduct];
-            const action = { type: fetchProducts.fulfilled.type, payload: products };
+            const payload = { data: products, meta: { total: 1, page: 1, limit: 10, totalPages: 1 } };
+            const action = { type: fetchProducts.fulfilled.type, payload };
             const state = productsReducer(undefined, action);
+
             expect(state.status).toBe('succeeded');
             expect(state.items).toEqual(products);
+            expect(state.meta).toEqual(payload.meta);
         });
 
         it('should handle rejected state', () => {
@@ -70,12 +74,19 @@ describe('productsSlice', () => {
     describe('fetchProducts thunk', () => {
         it('should fetch products successfully', async () => {
             const products = [mockProduct];
-            vi.mocked(ProductService.getAll).mockResolvedValue(products);
+            vi.mocked(ProductService.getAll).mockResolvedValue({ data: products, meta: {} });
 
             const dispatch = vi.fn();
             const thunk = fetchProducts();
 
-            await thunk(dispatch, () => ({}), undefined);
+            const mockState = {
+                products: {
+                    filters: {
+                        page: 1, limit: 10, search: '', categoryId: ''
+                    }
+                }
+            };
+            await thunk(dispatch, () => mockState, undefined);
 
             expect(ProductService.getAll).toHaveBeenCalledTimes(1);
         });
@@ -86,7 +97,14 @@ describe('productsSlice', () => {
             const dispatch = vi.fn();
             const thunk = fetchProducts();
 
-            await thunk(dispatch, () => ({}), undefined);
+            const mockState = {
+                products: {
+                    filters: {
+                        page: 1, limit: 10, search: '', categoryId: ''
+                    }
+                }
+            };
+            await thunk(dispatch, () => mockState, undefined);
 
             expect(ProductService.getAll).toHaveBeenCalledTimes(1);
         });

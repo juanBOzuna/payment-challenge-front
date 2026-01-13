@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 export interface CartItem {
-    id: string; // Product ID
+    id: string;
     name: string;
     price: number;
     imageUrl: string;
@@ -59,7 +59,7 @@ export const cartSlice = createSlice({
         updateQuantity: (state, action: PayloadAction<{ id: string; quantity: number }>) => {
             const item = state.items.find(item => item.id === action.payload.id);
             if (item) {
-                item.quantity = Math.max(1, action.payload.quantity); // Prevent 0 or negative
+                item.quantity = Math.max(1, action.payload.quantity);
             }
 
             const totals = calculateTotals(state.items);
